@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LOGIN_USER, REGISTER_USER, AUTH_USER } from "./types";
+import { LOGIN_USER, REGISTER_USER, AUTH_USER, UPLOAD_CLOTHES } from "./types";
 
 export function loginUser(dataToSubmit) {
   const request = axios
@@ -20,4 +20,11 @@ export function auth() {
     .post("/api/users/auth")
     .then((response) => response.data);
   return { type: AUTH_USER, payload: request };
+}
+
+export function uploadClothes(dataToSubmit) {
+  const request = axios
+    .post("/api/clothes/upload", dataToSubmit)
+    .then((response) => response.data);
+  return { type: UPLOAD_CLOTHES, payload: request };
 }

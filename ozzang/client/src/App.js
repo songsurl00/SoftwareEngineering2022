@@ -4,12 +4,23 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./components/views/LandingPage/LandingPage";
 import LoginPage from "./components/views/LoginPage/LoginPage";
 import RegisterPage from "./components/views/RegisterPage/RegisterPage";
+import MainPage from "./components/views/MainPage/MainPage";
+import UploadClothesPage from "./components/views/UploadClothesPage/UploadClothes";
 import Auth from "./hoc/auth";
+import ProfilePage from "./components/views/ProfilePage/ProfilePage";
+import StylePage from "./components/views/MainPage/StylePage";
+import SharePage from "./components/views/MainPage/SharePage";
+import FavPage from "./components/views/MainPage/FavPage";
 
+const AuthProfilePage = Auth(ProfilePage, true);
 const AuthLandingPage = Auth(LandingPage, null);
 const AuthLoginPage = Auth(LoginPage, false);
 const AuthRegisterPage = Auth(RegisterPage, false);
-
+const AuthMainPage = Auth(MainPage, true);
+const AuthStylePage = Auth(StylePage, true);
+const AuthSharePage = Auth(SharePage, true);
+const AuthFavPage = Auth(FavPage, true);
+const AuthUploadClothesPage = Auth(UploadClothesPage, true);
 function App() {
   return (
     <Router>
@@ -22,9 +33,17 @@ function App() {
          of them to render at a time
          */}
         <Routes>
-          <Route path="/" element={<AuthLandingPage />} />
+          <Route path="/" element={<AuthLoginPage />} />
           <Route path="/login" element={<AuthLoginPage />} />
           <Route path="/register" element={<AuthRegisterPage />} />
+          <Route path="/main" element={<AuthMainPage />} />
+          <Route path="/uploadClothes" element={<AuthUploadClothesPage />} />
+          <Route path="/profile" element={<AuthProfilePage />} />
+          <Route path="/findAccount" />
+          <Route path="/share" element={<AuthSharePage />} />
+          <Route path="/style" element={<AuthStylePage />} />
+          <Route path="/fav" element={<AuthFavPage />} />
+          {/* findaccount 아직 연결 안함. */}
         </Routes>
       </div>
     </Router>

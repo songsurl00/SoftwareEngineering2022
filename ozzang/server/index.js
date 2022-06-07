@@ -5,6 +5,8 @@ const port = 5001;
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 
+const { Clothes } = require("./models/Clothes");
+
 // application/x-www-form-urlencoded 형태로 된 정보를를 분석해서 가져올 수 있게 한다.
 app.use(bodyParser.urlencoded({ extended: true }));
 // application/json 형태로 된 정보를 분석해서 가져올 수 있게 한다.
@@ -101,3 +103,19 @@ app.get("/api/users/logout", auth, (req, res) => {
     }
   );
 });
+
+app.post("/api/clothes/upload", (req, res) => {
+  // 옷 업로드 라우트
+  // 옷 정보에 필요한 정보를 클라이언트에서 가져와서
+  // 데이터베이스에 넣어준다.
+
+  const clothes = new Clothes(req.body);
+  clothes.save((err, doc) => {
+    if (err) return res.json({ success: false, err });
+    return res.status(200).json({
+      success: true,
+    });
+  });
+});
+
+app.get("api/users/");
