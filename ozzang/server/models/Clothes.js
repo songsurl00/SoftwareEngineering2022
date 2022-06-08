@@ -3,6 +3,9 @@ const res = require("express/lib/response");
 const jwt = require("jsonwebtoken");
 
 const ClothesSchema = mongoose.Schema({
+  uploader: {
+    type: String,
+  },
   userid: {
     type: String,
   },

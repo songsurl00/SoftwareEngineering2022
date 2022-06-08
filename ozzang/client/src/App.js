@@ -13,7 +13,7 @@ import SharePage from "./components/views/MainPage/SharePage";
 import FavPage from "./components/views/MainPage/FavPage";
 
 const AuthProfilePage = Auth(ProfilePage, true);
-const AuthLandingPage = Auth(LandingPage, null);
+const AuthLandingPage = Auth(LandingPage, null); // 랜딩페이지->메인페이지로 변경해서 사용안함.
 const AuthLoginPage = Auth(LoginPage, false);
 const AuthRegisterPage = Auth(RegisterPage, false);
 const AuthMainPage = Auth(MainPage, true);
@@ -33,7 +33,7 @@ function App() {
          of them to render at a time
          */}
         <Routes>
-          <Route path="/" element={<AuthLoginPage />} />
+          <Route path="/" element={<AuthMainPage />} />
           <Route path="/login" element={<AuthLoginPage />} />
           <Route path="/register" element={<AuthRegisterPage />} />
           <Route path="/main" element={<AuthMainPage />} />

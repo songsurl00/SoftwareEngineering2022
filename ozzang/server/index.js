@@ -5,8 +5,6 @@ const port = 5001;
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 
-const { Clothes } = require("./models/Clothes");
-
 // application/x-www-form-urlencoded 형태로 된 정보를를 분석해서 가져올 수 있게 한다.
 app.use(bodyParser.urlencoded({ extended: true }));
 // application/json 형태로 된 정보를 분석해서 가져올 수 있게 한다.
@@ -15,6 +13,7 @@ app.use(cookieParser());
 
 const { auth } = require("./middleware/auth");
 const { User } = require("./models/User");
+const { Clothes } = require("./models/Clothes");
 
 const mongoose = require("mongoose");
 
@@ -119,3 +118,21 @@ app.post("/api/clothes/upload", (req, res) => {
 });
 
 app.get("api/users/");
+
+app.post("/api/clothes/listing", (req, res) => {
+  // 옷 정보 가져오기 ( 조회 )
+
+  Clothes.find(
+    { name: req.body.name, uploader: req.body.email },
+    (err, clothes) => {
+      if (!clothes) {
+        return res.json({
+          clotehsSearchSuccess: false,
+          message: "해당 정보에 맞는 옷이 없습니다.",
+        });
+      }
+    }
+  );
+});
+
+// S3 image upload api setting

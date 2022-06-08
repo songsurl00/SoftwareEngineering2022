@@ -79,6 +79,7 @@ function RegisterPage() {
     if (Password === "") {
       return alert("비밀번호를 입력하세요!");
     }
+    if (Password.length < 8) return alert("비밀번호가 너무 짧습니다.");
     if (ConfirmPassword === "") {
       return alert("비밀번호 확인을 입력하세요!");
     }

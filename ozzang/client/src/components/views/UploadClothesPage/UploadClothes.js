@@ -3,7 +3,6 @@ import { uploadClothes } from "../../../_actions/user_action";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
-import S3Upload from "../../../S3Upload";
 
 const Wrapper = styled.div`
   text-align: center;

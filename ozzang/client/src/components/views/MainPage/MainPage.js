@@ -86,6 +86,10 @@ function MainPage() {
     }
   };
 
+  const PlusBtnHandler = (event) => {
+    navigate("/uploadclothes");
+  };
+
   return (
     <Wrapper>
       <NavWrapper>
@@ -134,7 +138,7 @@ function MainPage() {
           </div>
         </form>
         <div>
-          <button onClick={null}>+</button>
+          <button onClick={PlusBtnHandler}>+</button>
         </div>
 
         <div></div>
