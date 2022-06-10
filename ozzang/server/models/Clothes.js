@@ -36,6 +36,7 @@ const ClothesSchema = mongoose.Schema({
   },
   fav: {
     type: Boolean,
+    default: false,
   },
 });
 

@@ -5,6 +5,7 @@ import {
   AUTH_USER,
   UPLOAD_CLOTHES,
   USER_INFO,
+  FAV_UPDATE,
 } from "./types";
 
 export function loginUser(dataToSubmit) {
@@ -37,4 +38,9 @@ export async function uploadClothes(dataToSubmit) {
 export async function getUserInfo() {
   const request = await axios.get("/api/users/getUserInfo");
   return { type: USER_INFO, payload: request.data };
+}
+
+export async function updateFavorite(dataToSubmit) {
+  const request = await axios.post("/api/clothes/updateFav", dataToSubmit);
+  return { type: FAV_UPDATE, payload: request.data };
 }

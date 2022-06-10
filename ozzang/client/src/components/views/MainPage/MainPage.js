@@ -169,7 +169,7 @@ function MainPage() {
             onChange={onSearchHandler}
           />
         </FilterWrapper>
-        <ClothesGridWrapper clothes={clothes} />
+        <ClothesGridWrapper clothes={clothes} setClothes={setClothes} />
 
         <NewClothesButton onClick={PlusBtnHandler}>
           <StyledPlusSvgIcon />

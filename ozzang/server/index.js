@@ -191,4 +191,19 @@ app.get("/api/clothes/listing", (req, res) => {
 });
 
 // 옷 즐겨찾기 설정 및 해제 동작
-app.post("/api/clothes/favUpdate", (req, res) => {});
+app.post("/api/clothes/updateFav", (req, res) => {
+  Clothes.findOne({ _id: req.body._id }, (err, cloth) => {
+    if (err) return res.json({ success: false, err });
+    Clothes.findOneAndUpdate(
+      { _id: req.body._id },
+      { fav: !cloth.fav },
+      (err, cloth) => {
+        console.log(cloth.fav);
+        if (err) return res.json({ success: false, err });
+        return res.status(200).send({
+          success: true,
+        });
+      }
+    );
+  });
+});

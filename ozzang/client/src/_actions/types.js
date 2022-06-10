@@ -4,3 +4,4 @@ export const REGISTER_USER = "register_user";
 export const AUTH_USER = "auth_user";
 export const USER_INFO = "user_email";
 export const UPLOAD_CLOTHES = "upload_clothes";
+export const FAV_UPDATE = "favorite_updata";
