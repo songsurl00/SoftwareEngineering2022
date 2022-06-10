@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getUserInfo } from "../../../_actions/user_action";
+import MainPageHeader from "../MainPage/MainPageHeader";
 
 const Wrapper = styled.div`
   margin: 0;
@@ -43,7 +44,7 @@ const BodyWrapper = styled.div`
   }
 `;
 
-function StylePage() {
+function ProfilePage() {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({});
   const ClothesBtnHandler = (event) => {
@@ -87,16 +88,7 @@ function StylePage() {
 
   return (
     <Wrapper>
-      <NavWrapper>
-        <h1>Ozzang</h1>
-        <nav>
-          <button onClick={ClothesBtnHandler}>Clothes</button>
-          <button onClick={StyleBtnHandler}>Style</button>
-          <button onClick={FavBtnHandler}>Favorite</button>
-          <button onClick={ShareBtnHandler}>Share</button>
-          <button onClick={ProfileBtnHandler}>Profile</button>
-        </nav>
-      </NavWrapper>
+      <MainPageHeader />
       <BodyWrapper>
         <div>이메일</div>
         <div>{userInfo.email}</div>
@@ -110,4 +102,4 @@ function StylePage() {
   );
 }
 
-export default StylePage;
+export default ProfilePage;
