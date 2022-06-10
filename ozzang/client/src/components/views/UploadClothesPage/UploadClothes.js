@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { uploadClothes } from "../../../_actions/user_action";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
+import { getUserInfo } from "../../../_actions/user_action";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -55,9 +56,32 @@ const UploadBox = styled.form`
 function UploadClothesPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [userInfo, setUserInfo] = useState({});
 
-  // state 생성
-  const [UserId, setUserId] = useState("");
+  // 이미지 업로드을 위한 Base64 변환.
+  const [ImageSrc, setImageSrc] = useState("");
+
+  const encFileToBase64 = (fileBlob) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(fileBlob);
+    return new Promise((resolve) => {
+      reader.onload = () => {
+        setImageSrc(reader.result);
+        resolve();
+      };
+    });
+  };
+
+  // 사용자 토큰 받아와서 업로더 구분하기 위한 장치
+  useEffect(() => {
+    const fetchUserInfoAsync = async () => {
+      const response = await getUserInfo();
+      const newUserInfo = response.payload;
+      setUserInfo(newUserInfo);
+    };
+    fetchUserInfoAsync();
+  }, []);
+
   const [Name, setName] = useState("");
   const [Brand, setBrand] = useState("");
   const [Price, setPrice] = useState("");
@@ -96,7 +120,7 @@ function UploadClothesPage() {
     }
 
     let body = {
-      userId: UserId,
+      useremail: userInfo.email,
       name: Name,
       brand: Brand,
       price: Price,
@@ -104,9 +128,10 @@ function UploadClothesPage() {
       season: Season,
       purchasePlace: PurchasePlace,
       purchaseDate: PurchaseDate,
+      img: ImageSrc,
     };
 
-    dispatch(uploadClothes(body)).then((response) => {
+    uploadClothes(body).then((response) => {
       if (response.payload.success) {
         navigate("/main");
       } else {
@@ -115,11 +140,28 @@ function UploadClothesPage() {
     });
   };
 
+  // console.log(ImageSrc);
   return (
     <Wrapper>
       <Title>옷 등록</Title>
       <InputWrapper>
         <UploadBox onSubmit={onSubmitHandler}>
+          <div>
+            {ImageSrc && (
+              <img
+                src={ImageSrc}
+                alt="preview-img"
+                style={{ maxWidth: "100%" }}
+              />
+            )}
+          </div>
+          <input
+            type="file"
+            onChange={(e) => {
+              encFileToBase64(e.target.files[0]);
+            }}
+          />
+
           <label>옷 이름</label>
           <input type="text" value={Name} onChange={onNameHandler} />
           <label>브랜드</label>
@@ -159,7 +201,6 @@ function UploadClothesPage() {
             value={PurchaseDate}
             onChange={onPurchaseDateHandler}
           />
-
           <button type="submit">옷 등록하기</button>
         </UploadBox>
       </InputWrapper>

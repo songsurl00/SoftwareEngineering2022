@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { getUserInfo } from "../../../_actions/user_action";
 
 const Wrapper = styled.div`
   margin: 0;
@@ -44,7 +45,7 @@ const BodyWrapper = styled.div`
 
 function StylePage() {
   const navigate = useNavigate();
-
+  const [userInfo, setUserInfo] = useState({});
   const ClothesBtnHandler = (event) => {
     navigate("/main");
   };
@@ -75,6 +76,15 @@ function StylePage() {
     });
   };
 
+  useEffect(() => {
+    const fetchUserInfoAsync = async () => {
+      const response = await getUserInfo();
+      const newUserInfo = response.payload;
+      setUserInfo(newUserInfo);
+    };
+    fetchUserInfoAsync();
+  }, []);
+
   return (
     <Wrapper>
       <NavWrapper>
@@ -88,6 +98,12 @@ function StylePage() {
         </nav>
       </NavWrapper>
       <BodyWrapper>
+        <div>이메일</div>
+        <div>{userInfo.email}</div>
+        <div>사용자이름</div>
+        <div>{userInfo.name}</div>
+        <div>전화번호</div>
+        <div>{userInfo.userTel}</div>
         <button onClick={LogoutBtnHandler}>로그아웃하기</button>
       </BodyWrapper>
     </Wrapper>

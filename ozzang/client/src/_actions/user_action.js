@@ -1,5 +1,11 @@
 import axios from "axios";
-import { LOGIN_USER, REGISTER_USER, AUTH_USER, UPLOAD_CLOTHES } from "./types";
+import {
+  LOGIN_USER,
+  REGISTER_USER,
+  AUTH_USER,
+  UPLOAD_CLOTHES,
+  USER_INFO,
+} from "./types";
 
 export function loginUser(dataToSubmit) {
   const request = axios
@@ -22,9 +28,13 @@ export function auth() {
   return { type: AUTH_USER, payload: request };
 }
 
-export function uploadClothes(dataToSubmit) {
-  const request = axios
-    .post("/api/clothes/upload", dataToSubmit)
-    .then((response) => response.data);
-  return { type: UPLOAD_CLOTHES, payload: request };
+export async function uploadClothes(dataToSubmit) {
+  const request = await axios.post("/api/clothes/upload", dataToSubmit);
+  return { type: UPLOAD_CLOTHES, payload: request.data };
+}
+
+// 현재 로그인한 사용자 정보 불러오기
+export async function getUserInfo() {
+  const request = await axios.get("/api/users/getUserInfo");
+  return { type: USER_INFO, payload: request.data };
 }

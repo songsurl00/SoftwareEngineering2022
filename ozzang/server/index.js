@@ -4,11 +4,15 @@ const app = express(); // express app 생성
 const port = 5001;
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+// for s3 access
+const AWS = require("aws-sdk");
+AWS.config.loadFromPath("./s3_config.json");
+const s3Bucket = new AWS.S3({ params: { Bucket: "ozzang-upload-bucket" } });
 
 // application/x-www-form-urlencoded 형태로 된 정보를를 분석해서 가져올 수 있게 한다.
 app.use(bodyParser.urlencoded({ extended: true }));
 // application/json 형태로 된 정보를 분석해서 가져올 수 있게 한다.
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: "50mb" }));
 app.use(cookieParser());
 
 const { auth } = require("./middleware/auth");
@@ -18,6 +22,9 @@ const { Clothes } = require("./models/Clothes");
 const mongoose = require("mongoose");
 
 const config = require("./config/key");
+
+const S3_BUCKET_URL =
+  "https://ozzang-upload-bucket.s3.ap-northeast-2.amazonaws.com";
 
 mongoose
   .connect(config.mongoURI)
@@ -103,12 +110,53 @@ app.get("/api/users/logout", auth, (req, res) => {
   );
 });
 
-app.post("/api/clothes/upload", (req, res) => {
+app.post("/api/clothes/upload", async (req, res) => {
   // 옷 업로드 라우트
   // 옷 정보에 필요한 정보를 클라이언트에서 가져와서
   // 데이터베이스에 넣어준다.
 
-  const clothes = new Clothes(req.body);
+  // base64 decoding.
+  const base64EncodedImage = req.body.img;
+  const decodedImage = new Buffer.from(
+    base64EncodedImage.replace(/^data:image\/\w+;base64,/, ""),
+    "base64"
+  );
+  const type = base64EncodedImage.split(";")[0].split("/")[1];
+  const key = Math.random().toString(36).substring(2, 11);
+  let s3uploadData = {
+    Key: `${key}.${type}`,
+    Body: decodedImage,
+    ContentEncoding: "base64",
+    ContentType: `image/${type}`,
+  };
+
+  await s3Bucket.putObject(s3uploadData).promise();
+  console.log("successfully uploaded the image!");
+
+  // s3Bucket.putObject(s3uploadData, function (err, s3uploadData) {
+  //   if (err) {
+  //     console.log(err);
+  //     console.log("Error uploading data: ", s3uploadData);
+  //   } else {
+  //     console.log("successfully uploaded the image!");
+  //   }
+  // });
+
+  // S3 image upload
+
+  let row = {
+    useremail: req.body.useremail,
+    name: req.body.name,
+    brand: req.body.brand,
+    price: req.body.price,
+    category: req.body.category,
+    season: req.body.season,
+    purchasePlace: req.body.purchasePlace,
+    purchaseDate: req.body.purchaseDate,
+    imgUrl: `${S3_BUCKET_URL}/${key}.${type}`,
+  };
+
+  const clothes = new Clothes(row);
   clothes.save((err, doc) => {
     if (err) return res.json({ success: false, err });
     return res.status(200).json({
@@ -117,22 +165,13 @@ app.post("/api/clothes/upload", (req, res) => {
   });
 });
 
-app.get("api/users/");
+app.post("/api/clothes/listing", (req, res) => {});
 
-app.post("/api/clothes/listing", (req, res) => {
-  // 옷 정보 가져오기 ( 조회 )
-
-  Clothes.find(
-    { name: req.body.name, uploader: req.body.email },
-    (err, clothes) => {
-      if (!clothes) {
-        return res.json({
-          clotehsSearchSuccess: false,
-          message: "해당 정보에 맞는 옷이 없습니다.",
-        });
-      }
-    }
-  );
+// 옷 정보 조회 cookie 받아서, user의 email, 폰번호, 등등 받아오기
+app.get("/api/users/getUserInfo", (req, res) => {
+  const token = req?.cookie?.x_auth;
+  User.findOne({ token: token }, (err, user) => {
+    if (err) return res.json({ success: false, err });
+    return res.json(user);
+  });
 });
-
-// S3 image upload api setting

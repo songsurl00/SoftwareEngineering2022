@@ -3,10 +3,7 @@ const res = require("express/lib/response");
 const jwt = require("jsonwebtoken");
 
 const ClothesSchema = mongoose.Schema({
-  uploader: {
-    type: String,
-  },
-  userid: {
+  useremail: {
     type: String,
   },
   name: {
@@ -34,8 +31,11 @@ const ClothesSchema = mongoose.Schema({
   purchaseDate: {
     type: Date,
   },
-  img: {
+  imgUrl: {
     type: String,
+  },
+  fav: {
+    type: Boolean,
   },
 });
 

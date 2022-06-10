@@ -37,7 +37,7 @@ const BodyWrapper = styled.div`
   padding-top: 100px;
 `;
 
-function StylePage() {
+function ProfilePage() {
   const navigate = useNavigate();
 
   const onClothesBtnHandler = (event) => {
@@ -77,4 +77,4 @@ function StylePage() {
   );
 }
 
-export default StylePage;
+export default ProfilePage;
