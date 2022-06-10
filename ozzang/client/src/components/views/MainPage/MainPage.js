@@ -1,77 +1,77 @@
 import React, { useEffect, useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 import MainPageHeader from "./MainPageHeader";
 import ClothesGridWrapper from "./ClothesGridWrapper";
 
-import TextField from '@mui/material/TextField';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
+import TextField from "@mui/material/TextField";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
-import { ReactComponent as PlusSvgIcon } from '../assets/plus_icon.svg';
+import { ReactComponent as PlusSvgIcon } from "../assets/plus_icon.svg";
 
 const Wrapper = styled.div`
-width: 100%;
-height: 100vh;
-margin: 0;
-padding: 80px 0px 0px 0px;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 80px 0px 0px 0px;
 `;
 
 const BodyWrapper = styled.div`
-position: relative;
-width: 100%;
-height: 100%;
-margin: 0px;
-display: flex;
-flex-direction: column;
-align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-overflow-y: scroll;
+  overflow-y: scroll;
 `;
 
 const FilterWrapper = styled.div`
-display: flex;
-flex-direction: row;
-width: 960px;
-height: 104px;
-padding: 24px 0px;
+  display: flex;
+  flex-direction: row;
+  width: 960px;
+  height: 104px;
+  padding: 24px 0px;
 `;
 
 const NewClothesButton = styled.button`
-position: fixed;
-right: 64px;
-bottom: 32px;
+  position: fixed;
+  right: 64px;
+  bottom: 32px;
 
-width: 72px;
-height: 72px;
+  width: 72px;
+  height: 72px;
 
-padding: 20px;
-margin: 0px;
+  padding: 20px;
+  margin: 0px;
 
-font-size: 32px;
-line-height: 72px;
+  font-size: 32px;
+  line-height: 72px;
 
-border: 0px;
-border-radius: 72px;
+  border: 0px;
+  border-radius: 72px;
 
-background-color: #9932CC;
-cursor: pointer;
+  background-color: #9932cc;
+  cursor: pointer;
 
-transition: box-shadow .1s;
+  transition: box-shadow 0.1s;
 
-&:hover {
-  box-shadow: 0px 1px 8px rgba(0,0,0,.5);
-}
+  &:hover {
+    box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.5);
+  }
 `;
 
 const StyledPlusSvgIcon = styled(PlusSvgIcon)`
-float: left;
-width: 32px;
-height: 32px;
-color: white;
+  float: left;
+  width: 32px;
+  height: 32px;
+  color: white;
 `;
 
 function MainPage() {
@@ -83,7 +83,7 @@ function MainPage() {
 
   useEffect(() => {
     const getClothesAsync = async () => {
-      const response = await axios.get('/api/clothes/listing');
+      const response = await axios.get("/api/clothes/listing");
       if (!response?.data?.success) {
         return setClothes([]);
       }
@@ -119,11 +119,13 @@ function MainPage() {
 
   return (
     <Wrapper>
-      <MainPageHeader/>
+      <MainPageHeader />
       <BodyWrapper>
         <FilterWrapper>
           <FormControl sx={{ minWidth: 160, marginRight: 2 }}>
-            <InputLabel id="main-page-category-filter-label">카테고리</InputLabel>
+            <InputLabel id="main-page-category-filter-label">
+              카테고리
+            </InputLabel>
             <Select
               labelId="main-page-category-filter-label"
               value={searchCat}
@@ -160,17 +162,17 @@ function MainPage() {
             </Select>
           </FormControl>
           <TextField
-            sx={{ minWidth: 320, float: 'right', marginLeft: 'auto' }}
+            sx={{ minWidth: 320, float: "right", marginLeft: "auto" }}
             label="검색어"
             variant="outlined"
             value={searchclothes}
             onChange={onSearchHandler}
           />
         </FilterWrapper>
-        <ClothesGridWrapper clothes={clothes}/>
-        
+        <ClothesGridWrapper clothes={clothes} />
+
         <NewClothesButton onClick={PlusBtnHandler}>
-          <StyledPlusSvgIcon/>
+          <StyledPlusSvgIcon />
         </NewClothesButton>
       </BodyWrapper>
     </Wrapper>

@@ -1,37 +1,42 @@
-const express = require("express");
 // express 모듈 가져오기
+const express = require("express");
 const app = express(); // express app 생성
+
 const port = 5001;
+
+// application/json 형태로 된 정보를 분석해서 가져올 수 있게 한다.
 const bodyParser = require("body-parser");
+app.use(bodyParser.json({ limit: "50mb" }));
+// application/x-www-form-urlencoded 형태로 된 정보를를 분석해서 가져올 수 있게 한다.
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// cookie-parser 이용.
 const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
 // for s3 access
 const AWS = require("aws-sdk");
 AWS.config.loadFromPath("./s3_config.json");
 const s3Bucket = new AWS.S3({ params: { Bucket: "ozzang-upload-bucket" } });
-
-// application/x-www-form-urlencoded 형태로 된 정보를를 분석해서 가져올 수 있게 한다.
-app.use(bodyParser.urlencoded({ extended: true }));
-// application/json 형태로 된 정보를 분석해서 가져올 수 있게 한다.
-app.use(bodyParser.json({ limit: "50mb" }));
-app.use(cookieParser());
+const S3_BUCKET_URL =
+  "https://ozzang-upload-bucket.s3.ap-northeast-2.amazonaws.com";
+const config = require("./config/key");
 
 const { auth } = require("./middleware/auth");
 const { User } = require("./models/User");
 const { Clothes } = require("./models/Clothes");
 
 const mongoose = require("mongoose");
-
-const config = require("./config/key");
-
-const S3_BUCKET_URL =
-  "https://ozzang-upload-bucket.s3.ap-northeast-2.amazonaws.com";
-
 mongoose
   .connect(config.mongoURI)
   .then(() => {
     console.log("MongoDB Connected...");
   })
   .catch((err) => console.log("err"));
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});
 
 // 회원가입 라우터 register router
 app.post("/api/users/register", (req, res) => {
@@ -46,6 +51,7 @@ app.post("/api/users/register", (req, res) => {
   }); // MongoDB method
 });
 
+// 로그인 라우터
 app.post("/api/users/login", (req, res) => {
   // 1. 요청된 이메일을 DB에 있는지 찾기.
   User.findOne({ email: req.body.email }, (err, user) => {
@@ -69,6 +75,7 @@ app.post("/api/users/login", (req, res) => {
         // 토큰을 저장한다. 어디에? 쿠키/로컬스토리지/ 등등 -> 일단은 쿠키에 하자!
         res
           .cookie("x_auth", user.token)
+          .cookie("email", user.email)
           .status(200)
           .json({ loginSuccess: true, userId: user._id });
       });
@@ -90,10 +97,6 @@ app.post("/api/users/auth", auth, (req, res) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
-
 // 로그아웃 라우터
 app.get("/api/users/logout", auth, (req, res) => {
   User.findOneAndUpdate(
@@ -110,8 +113,8 @@ app.get("/api/users/logout", auth, (req, res) => {
   );
 });
 
+// 옷 업로드 라우트
 app.post("/api/clothes/upload", async (req, res) => {
-  // 옷 업로드 라우트
   // 옷 정보에 필요한 정보를 클라이언트에서 가져와서
   // 데이터베이스에 넣어준다.
 
@@ -123,6 +126,8 @@ app.post("/api/clothes/upload", async (req, res) => {
   );
   const type = base64EncodedImage.split(";")[0].split("/")[1];
   const key = Math.random().toString(36).substring(2, 11);
+
+  // s3 upload 위한 변수
   let s3uploadData = {
     Key: `${key}.${type}`,
     Body: decodedImage,
@@ -130,19 +135,9 @@ app.post("/api/clothes/upload", async (req, res) => {
     ContentType: `image/${type}`,
   };
 
+  // s3 upload 및 upload 완료 까지 대기.
   await s3Bucket.putObject(s3uploadData).promise();
   console.log("successfully uploaded the image!");
-
-  // s3Bucket.putObject(s3uploadData, function (err, s3uploadData) {
-  //   if (err) {
-  //     console.log(err);
-  //     console.log("Error uploading data: ", s3uploadData);
-  //   } else {
-  //     console.log("successfully uploaded the image!");
-  //   }
-  // });
-
-  // S3 image upload
 
   let row = {
     useremail: req.body.useremail,
@@ -165,13 +160,35 @@ app.post("/api/clothes/upload", async (req, res) => {
   });
 });
 
-app.post("/api/clothes/listing", (req, res) => {});
-
 // 옷 정보 조회 cookie 받아서, user의 email, 폰번호, 등등 받아오기
 app.get("/api/users/getUserInfo", (req, res) => {
-  const token = req?.cookie?.x_auth;
+  const token = req.cookies.x_auth;
   User.findOne({ token: token }, (err, user) => {
     if (err) return res.json({ success: false, err });
     return res.json(user);
   });
 });
+
+app.get("/api/clothes/listing", (req, res) => {
+  // 옷 정보 가져오기 ( 조회 )
+  Clothes.find(
+    // { name: req.body.name, uploader: req.body.email },
+    { useremail: req.cookies.email },
+    (err, clothes) => {
+      if (!clothes) {
+        return res.json({
+          clotehsSearchSuccess: false,
+          message: "해당 정보에 맞는 옷이 없습니다.",
+        });
+      } else {
+        return res.json({
+          success: true,
+          clothes,
+        });
+      }
+    }
+  );
+});
+
+// 옷 즐겨찾기 설정 및 해제 동작
+app.post("/api/clothes/favUpdate", (req, res) => {});
