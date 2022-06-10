@@ -1,42 +1,77 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from 'axios';
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
+import MainPageHeader from "./MainPageHeader";
+import ClothesGridWrapper from "./ClothesGridWrapper";
+
+import TextField from '@mui/material/TextField';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+
+import { ReactComponent as PlusSvgIcon } from '../assets/plus_icon.svg';
 
 const Wrapper = styled.div`
-  margin: 0;
-`;
-
-const NavWrapper = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-
-  font-size: 20px;
-
-  height: 100px;
-  padding: 1rem;
-  color: black;
-  background: white;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 1;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  button {
-    border: none;
-    background: white;
-    margin: 40px;
-    font-size: 15px;
-  }
+width: 100%;
+height: 100vh;
+margin: 0;
+padding: 80px 0px 0px 0px;
 `;
 
 const BodyWrapper = styled.div`
-  position: relative;
-  padding-top: 100px;
-  display: flex;
-  float: left;
+position: relative;
+width: 100%;
+height: 100%;
+margin: 0px;
+display: flex;
+flex-direction: column;
+align-items: center;
+
+overflow-y: scroll;
+`;
+
+const FilterWrapper = styled.div`
+display: flex;
+flex-direction: row;
+width: 960px;
+height: 104px;
+padding: 24px 0px;
+`;
+
+const NewClothesButton = styled.button`
+position: fixed;
+right: 64px;
+bottom: 32px;
+
+width: 72px;
+height: 72px;
+
+padding: 20px;
+margin: 0px;
+
+font-size: 32px;
+line-height: 72px;
+
+border: 0px;
+border-radius: 72px;
+
+background-color: #9932CC;
+cursor: pointer;
+
+transition: box-shadow .1s;
+
+&:hover {
+  box-shadow: 0px 1px 8px rgba(0,0,0,.5);
+}
+`;
+
+const StyledPlusSvgIcon = styled(PlusSvgIcon)`
+float: left;
+width: 32px;
+height: 32px;
+color: white;
 `;
 
 function MainPage() {
@@ -44,39 +79,31 @@ function MainPage() {
   const [searchCat, setsCategory] = useState("");
   const [searchSeason, setsSeason] = useState("");
 
+  const [clothes, setClothes] = useState([]);
+
+  useEffect(() => {
+    const getClothesAsync = async () => {
+      const response = await axios.get('/api/clothes/listing');
+      if (!response?.data?.success) {
+        return setClothes([]);
+      }
+      const newClothes = response.data.clothes;
+      return setClothes(newClothes);
+    };
+    getClothesAsync();
+  }, []);
+
   const onCategoryHandler = (event) => {
-    setsCategory(event.currentTarget.value);
+    setsCategory(event.target.value);
   };
-
   const onSeasonHandler = (event) => {
-    setsSeason(event.currentTarget.value);
+    setsSeason(event.target.value);
   };
-
   const onSearchHandler = (event) => {
     setSearch(event.currentTarget.value);
   };
 
   const navigate = useNavigate();
-
-  const onClothesBtnHandler = (event) => {
-    navigate("/main");
-  };
-
-  const onProfileBtnHandler = (event) => {
-    navigate("/profile");
-  };
-
-  const onStyleBtnHandler = (event) => {
-    navigate("/style");
-  };
-
-  const onShareBtnHandler = (event) => {
-    navigate("/share");
-  };
-
-  const onFavBtnHandler = (event) => {
-    navigate("/fav");
-  };
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
@@ -92,56 +119,59 @@ function MainPage() {
 
   return (
     <Wrapper>
-      <NavWrapper>
-        <h1>Ozzang</h1>
-        <nav>
-          <button onClick={onClothesBtnHandler}>Clothes</button>
-          <button onClick={onStyleBtnHandler}>Style</button>
-          <button onClick={onFavBtnHandler}>Favorite</button>
-          <button onClick={onShareBtnHandler}>Share</button>
-          <button onClick={onProfileBtnHandler}>Profile</button>
-        </nav>
-      </NavWrapper>
+      <MainPageHeader/>
       <BodyWrapper>
-        <form onSubmit={onSubmitHandler}>
-          <div>
-            <select value={searchCat} onChange={onCategoryHandler}>
-              <option>상의</option>
-              <option>아우터</option>
-              <option>바지</option>
-              <option>원피스</option>
-              <option>스커트</option>
-              <option>스니커즈</option>
-              <option>신발</option>
-              <option>가방</option>
-              <option>스포츠</option>
-              <option>모자</option>
-              <option>액세서리</option>
-            </select>
-          </div>
-          <div>
-            <select value={searchSeason} onChange={onSeasonHandler}>
-              <option>봄</option>
-              <option>여름</option>
-              <option>가을</option>
-              <option>겨을</option>
-            </select>
-          </div>
-          <div>
-            <input
-              type="text"
-              value={searchclothes}
-              placeholder="Search"
-              onChange={onSearchHandler}
-            ></input>
-            <button type="submit">Search</button>
-          </div>
-        </form>
-        <div>
-          <button onClick={PlusBtnHandler}>+</button>
-        </div>
-
-        <div></div>
+        <FilterWrapper>
+          <FormControl sx={{ minWidth: 160, marginRight: 2 }}>
+            <InputLabel id="main-page-category-filter-label">카테고리</InputLabel>
+            <Select
+              labelId="main-page-category-filter-label"
+              value={searchCat}
+              label="카테고리"
+              onChange={onCategoryHandler}
+            >
+              <MenuItem value="">선택 안함</MenuItem>
+              <MenuItem value="상의">상의</MenuItem>
+              <MenuItem value="아우터">아우터</MenuItem>
+              <MenuItem value="바지">바지</MenuItem>
+              <MenuItem value="원피스">원피스</MenuItem>
+              <MenuItem value="스커트">스커트</MenuItem>
+              <MenuItem value="스니커즈">스니커즈</MenuItem>
+              <MenuItem value="신발">신발</MenuItem>
+              <MenuItem value="가방">가방</MenuItem>
+              <MenuItem value="스포츠">스포츠</MenuItem>
+              <MenuItem value="모자">모자</MenuItem>
+              <MenuItem value="액세서리">액세서리</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl sx={{ minWidth: 80, marginRight: 2 }}>
+            <InputLabel id="main-page-season-filter-label">계절</InputLabel>
+            <Select
+              labelId="main-page-season-filter-label"
+              value={searchSeason}
+              label="계절"
+              onChange={onSeasonHandler}
+            >
+              <MenuItem value="">선택 안함</MenuItem>
+              <MenuItem value="봄">봄</MenuItem>
+              <MenuItem value="여름">여름</MenuItem>
+              <MenuItem value="가을">가을</MenuItem>
+              <MenuItem value="겨을">겨을</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField
+            sx={{ minWidth: 320, float: 'right', marginLeft: 'auto' }}
+            label="검색어"
+            variant="outlined"
+            value={searchclothes}
+            onChange={onSearchHandler}
+          />
+        </FilterWrapper>
+        <ClothesGridWrapper clothes={clothes}/>
+        
+        <NewClothesButton onClick={PlusBtnHandler}>
+          <StyledPlusSvgIcon/>
+        </NewClothesButton>
       </BodyWrapper>
     </Wrapper>
   );
