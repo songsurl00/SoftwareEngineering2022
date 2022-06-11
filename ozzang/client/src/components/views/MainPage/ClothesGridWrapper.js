@@ -3,7 +3,9 @@ import _ from "lodash";
 import styled from "@emotion/styled";
 import { updateFavorite } from "../../../_actions/user_action";
 
-import { ReactComponent as HeartSvgIcon } from "../assets/heart_icon.svg";
+import { ReactComponent as HeartSvgIcon } from '../assets/heart_icon.svg';
+import { useNavigate } from "react-router-dom";
+
 
 const Wrapper = styled.div`
   display: flex;
@@ -12,6 +14,15 @@ const Wrapper = styled.div`
   width: 100%;
   padding: 0px 0px 32px 0px;
 `;
+
+const WrapperTitle = styled.div`
+width: 960px;
+height: 40px;
+margin: 0px 0px 8px 0px;
+font-size: 18px;
+line-height: 40px;
+color: rgba(0,0,0,.5);
+`
 
 const GridWrapper = styled.div`
   display: grid;
@@ -92,13 +103,18 @@ const CardFavoriteButton = styled.div`
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.4);
   z-index: 1;
   opacity: 0;
-  transition: background-color 0.1s;
+  transition: background-color .1s, color: .1s;;
 
   &:hover {
     background-color: #efefef;
   }
 
   .cloth-card-hover & {
+    opacity: 1;
+  }
+  .cloth-card-fav & {
+    color: white;
+    background-color: #ff4747;
     opacity: 1;
   }
 `;
@@ -135,25 +151,29 @@ const ClothCard = (props) => {
 
   const [isHover, setIsHover] = useState(false);
 
-  const handleMouseOver = useCallback(() => {
-    setIsHover(true);
-  }, []);
-  const handleMouseOut = useCallback(() => {
-    setIsHover(false);
-  }, []);
+  const onCardMouseOver = useCallback(() => { setIsHover(true); }, []);
+  const onCardMouseOut = useCallback(() => { setIsHover(false); }, []);
 
-  const onFavoriteButtonClick = useCallback(() => {
+  const onFavoriteButtonClick = useCallback((event) => {
     updateFavorite(cloth);
     const newCloth = _.cloneDeep(cloth);
     newCloth.fav = !cloth.fav;
     updateCloth(clothIndex, newCloth);
+    event.stopPropagation();
   }, [cloth]);
+
+  const navigate = useNavigate();
+
+  const onCardClick = useCallback(() => {
+    navigate(`/cloth/${cloth._id}`);
+  }, [])
 
   return (
     <Card
-      className={(isHover || cloth.fav) && "cloth-card-hover"}
-      onMouseOver={handleMouseOver}
-      onMouseOut={handleMouseOut}
+      className={[isHover && 'cloth-card-hover', cloth.fav && 'cloth-card-fav'].join(' ')}
+      onClick={onCardClick}
+      onMouseOver={onCardMouseOver}
+      onMouseOut={onCardMouseOut}
     >
       <CardImage
         style={cloth.imgUrl && { backgroundImage: `url(${cloth.imgUrl})` }}
@@ -189,6 +209,7 @@ const ClothesGridWrapper = (props) => {
   );
   return (
     <Wrapper>
+      <WrapperTitle>옷 리스트 ({clothes.length}개 검색됨)</WrapperTitle>
       <GridWrapper>
         {_.map(clothes, (cloth, index) => {
           return (

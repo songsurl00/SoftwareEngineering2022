@@ -18,13 +18,15 @@ display: flex;
 justify-content: space-between;
 align-items: center;
 z-index: 9999;
+background-color: #248afd;
 box-shadow: 0px 2px 8px rgba(0,0,0,.3);
 `;
 
 const HeaderTitle = styled.div`
-padding: 16px;
+padding: 16px 16px 24px 16px;
 font-size: 40px;
-line-height: 48px;
+line-height: 40px;
+color: white;
 `;
 
 const HeaderTabWrapper = styled.div`
@@ -37,9 +39,10 @@ position: relative;
 margin: 0px 8px;
 padding: 0px 24px;
 border: none;
-background: white;
+background: transparent;
 font-size: 18px;
 cursor: pointer;
+color: white;
 
 &::before {
   position: absolute;
@@ -50,7 +53,7 @@ cursor: pointer;
   left: 0px;
   bottom: 0px;
 
-  background-color: #9932CC;
+  background-color: white;
   transition: height .2s;
 }
 &:hover::before {
@@ -66,7 +69,7 @@ function MainPageHeader() {
 
   return (
     <Header>
-      <HeaderTitle>Ozzang</HeaderTitle>
+      <HeaderTitle>OZZANG</HeaderTitle>
       <HeaderTabWrapper>
         <HeaderTab onClick={getNavigateFunc("/main")}>Clothes</HeaderTab>
         <HeaderTab onClick={getNavigateFunc("/style")}>Style</HeaderTab>

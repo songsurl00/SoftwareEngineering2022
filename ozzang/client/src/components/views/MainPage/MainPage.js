@@ -18,6 +18,7 @@ const Wrapper = styled.div`
   height: 100vh;
   margin: 0;
   padding: 80px 0px 0px 0px;
+  background: #eeeeee;
 `;
 
 const BodyWrapper = styled.div`
@@ -36,8 +37,12 @@ const FilterWrapper = styled.div`
   display: flex;
   flex-direction: row;
   width: 960px;
-  height: 104px;
-  padding: 24px 0px;
+  height: 88px;
+  margin: 0px 0px 16px 0px;
+  padding: 16px 20px 4px 20px;
+  border-radius: 0px;
+  box-shadow: 0px 1px 4px rgba(0,0,0,.3);
+  background-color: white;
 `;
 
 const NewClothesButton = styled.button`
@@ -57,7 +62,7 @@ const NewClothesButton = styled.button`
   border: 0px;
   border-radius: 72px;
 
-  background-color: #9932cc;
+  background-color: #f5a623;
   cursor: pointer;
 
   transition: box-shadow 0.1s;
@@ -146,7 +151,7 @@ function MainPage() {
               <MenuItem value="액세서리">액세서리</MenuItem>
             </Select>
           </FormControl>
-          <FormControl sx={{ minWidth: 80, marginRight: 2 }}>
+          <FormControl sx={{ minWidth: 120, marginRight: 2 }}>
             <InputLabel id="main-page-season-filter-label">계절</InputLabel>
             <Select
               labelId="main-page-season-filter-label"
