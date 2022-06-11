@@ -2,6 +2,7 @@
 export const LOGIN_USER = "login_user";
 export const REGISTER_USER = "register_user";
 export const AUTH_USER = "auth_user";
+export const WITHDRAWAL_USER = "withdrawal_users";
 export const USER_INFO = "user_email";
 export const UPLOAD_CLOTHES = "upload_clothes";
 export const FAV_UPDATE = "favorite_updata";

@@ -12,6 +12,7 @@ import {
   STYLE_LISTING,
   UPDATE_CLOTHES,
   DELETE_CLOTHES,
+  WITHDRAWAL_USER,
 } from "./types";
 
 // 로그인
@@ -36,6 +37,12 @@ export function auth() {
     .post("/api/users/auth")
     .then((response) => response.data);
   return { type: AUTH_USER, payload: request };
+}
+
+// 로그아웃
+export async function withdrawal() {
+  const request = await axios.post("/api/users/withdrawal");
+  return { type: WITHDRAWAL_USER, payload: request.data };
 }
 
 // 옷 업로드

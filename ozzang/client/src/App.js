@@ -40,10 +40,7 @@ function App() {
           <Route path="/register" element={<AuthRegisterPage />} />
           <Route path="/main" element={<AuthMainPage />} />
           <Route path="/cloth/:cloth_id" element={<AuthClothesDetailPage />} />
-          <Route
-            path="/uploadClothes/:cloth_id"
-            element={<AuthUploadClothesPage />}
-          />
+          <Route path="/uploadClothes" element={<AuthUploadClothesPage />} />
           <Route path="/profile" element={<AuthProfilePage />} />
           <Route path="/findAccount" />
           <Route path="/share" element={<AuthSharePage />} />
