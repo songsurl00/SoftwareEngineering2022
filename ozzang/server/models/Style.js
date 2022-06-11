@@ -23,7 +23,8 @@ const StyleSchema = mongoose.Schema({
     maxlength: 300,
   },
   clohteslist: {
-    type: Array,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Clothes",
   },
 });
 

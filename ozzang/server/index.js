@@ -181,7 +181,7 @@ app.get("/api/clothes/listing", (req, res) => {
   const temp = {
     category: req.query.category,
     season: req.query.season,
-    fav: req.query.fav === 'true',
+    fav: req.query.fav === "true",
   };
   let search = _.pickBy(temp, _.identity);
   Clothes.find(
@@ -287,4 +287,27 @@ app.post("/api/style/upload", async (req, res) => {
       success: true,
     });
   });
+});
+
+// 스타일 목록, 정보 가져오기 (조회)
+app.get("api/style/listing", (req, res) => {
+  Style.find({
+    useremail: req.cookies.email,
+    ...req.query,
+  })
+    .populate("clotheslist")
+    .exec((err, style) => {
+      console.log(data);
+      if (!data) {
+        return res.join({
+          styleSearchSuccess: false,
+          messaage: "해당 정보에 맞는 스타일이 없습니다.",
+        });
+      } else {
+        return res.json({
+          success: true,
+          data,
+        });
+      }
+    });
 });
