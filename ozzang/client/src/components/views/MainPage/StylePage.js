@@ -1,7 +1,12 @@
-import React, { useState, useCallback } from "react";
+import _ from "lodash";
+import React, { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import MainPageHeader from "./MainPageHeader";
+
+import { getStyle } from "../../../_actions/user_action";
+
+import ClothesSimpleGridWrapper from "../MainPage/ClothesSimpleGridWrapper";
 
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
@@ -101,7 +106,7 @@ position: relative;
 display: flex;
 width: 100%;
 
-padding : 16px;
+padding : 16px 16px 0px 16px;
 margin: 0px 0px 24px 0px;
 
 background-color: white;
@@ -135,12 +140,14 @@ transition: opacity .1s;
 `
 
 const StyleImageWrapper = styled.div`
-width: 320px;
-flex: 0 0 320px;
+width: 360px;
+flex: 0 0 360px;
 margin-right: 16px;
 `;
 const StyleImage = styled.img`
-width: 100%;
+width: 360px;
+height: 360px;
+object-fit: cover;
 `;
 const StyleInfoWrapper = styled.div`
 display: flex;
@@ -148,15 +155,15 @@ flex-direction: column;
 flex: 1 0 0px;
 `;
 const StyleInfoTitle = styled.div`
-margin: 0px 0px 16px 0px;
+margin: 0px 0px 12px 0px;
 font-size: 24px;
 font-weight: 500;
 line-height: 32px;
 `;
 const StyleInfoContentTitle = styled.div`
-margin: 0px 0px 4px 0px;
+margin: 0px 0px 0px 0px;
 font-size: 14px;
-line-height: 20px;
+line-height: 24px;
 color: rgba(0,0,0,.5);
 `;
 const StyleInfoContentDescription = styled.div`
@@ -185,32 +192,34 @@ background-color: rgba(0,0,0,.2);
 
 
 const StyleRow = (props) => {
+  const {style} = props;
+
   return (
     <StyleRowDiv>
       <StyleDeleteButton>삭제하기</StyleDeleteButton>
       <StyleImageWrapper>
-        <StyleImage src="https://image.msscdn.net/images/codimap/detail/16697/detail_16697_1_500.jpg?202206111806"/>
+        <StyleImage src={style.imgUrl}/>
       </StyleImageWrapper>
       <StyleInfoWrapper>
-        <StyleInfoTitle>미니멀 스타일</StyleInfoTitle>
+        <StyleInfoTitle>{style.name}</StyleInfoTitle>
         <StyleInfoContentTitle>설명</StyleInfoContentTitle>
-        <StyleInfoContentDescription>설명 쥰나 길게 어쩌고 나부랭이</StyleInfoContentDescription>
+        <StyleInfoContentDescription>{style.description}</StyleInfoContentDescription>
         <StyleInfoContentTable>
           <StyleInfoContentColumn>
             <StyleInfoContentTitle>계절</StyleInfoContentTitle>
-            <StyleInfoContentDescription>여름</StyleInfoContentDescription>
+            <StyleInfoContentDescription>{style.season}</StyleInfoContentDescription>
           </StyleInfoContentColumn>
           <StyleInfoContentColumn>
             <StyleInfoContentTitle>공개여부</StyleInfoContentTitle>
-            <StyleInfoContentDescription>공개</StyleInfoContentDescription>
+            <StyleInfoContentDescription>{style.share ? '공개' : '비공개'}</StyleInfoContentDescription>
           </StyleInfoContentColumn>
           <StyleInfoContentColumn>
             <StyleInfoContentTitle>등록한 사람</StyleInfoContentTitle>
-            <StyleInfoContentDescription>김어머</StyleInfoContentDescription>
+            <StyleInfoContentDescription>{style.useremail}</StyleInfoContentDescription>
           </StyleInfoContentColumn>
         </StyleInfoContentTable>
         <StyleInforRowSeparator/>
-        <StyleInfoContentTitle>착장 리스트</StyleInfoContentTitle>
+        <ClothesSimpleGridWrapper clothes={style.clotheslist || []}/>
       </StyleInfoWrapper>
     </StyleRowDiv>
   )
@@ -219,12 +228,23 @@ const StyleRow = (props) => {
 
 function StylePage() {
   const [seasonFilter, setSeasonFilter] = useState("all");
+  const [styles, setStyles] = useState([]);
   
   const navigate = useNavigate();
 
   const moveToUploadStyle = useCallback(() => {
     navigate('/uploadStyles');
   });
+
+  useEffect(() => {
+    const getStyleFromServer = async () => {
+      const response = await getStyle();
+      console.log(response)
+      setStyles(response.payload.style)
+    };
+    getStyleFromServer();
+  }, []);
+
 
   const updateSeasonFilter = useCallback((event) => {
     const newSeasonFilter = event.target.value;
@@ -252,10 +272,12 @@ function StylePage() {
           <NewStyleButton onClick={moveToUploadStyle}>스타일 만들기</NewStyleButton>
         </FilterWrapper>
         <StyleRowWrapper>
-          <StyleRowWrapperTitle>스타일 리스트 (8개 검색됨)</StyleRowWrapperTitle>
-          <StyleRow/>
-          <StyleRow/>
-          <StyleRow/>
+          <StyleRowWrapperTitle>스타일 리스트 ({styles.length}개 검색됨)</StyleRowWrapperTitle>
+          {
+            _.map(styles, (style) => {
+              return <StyleRow style={style}/>
+            })
+          }
         </StyleRowWrapper>
       </BodyWrapper>
     </Wrapper>
