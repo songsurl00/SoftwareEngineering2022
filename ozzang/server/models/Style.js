@@ -22,6 +22,9 @@ const StyleSchema = mongoose.Schema({
     type: String,
     maxlength: 300,
   },
+  clohteslist: {
+    type: ARRAY,
+  },
 });
 
 const Style = mongoose.model("Style", StyleSchema);
