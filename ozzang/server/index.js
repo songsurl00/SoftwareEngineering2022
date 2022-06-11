@@ -1,3 +1,4 @@
+const _ = require("lodash");
 // express 모듈 가져오기
 const express = require("express");
 const app = express(); // express app 생성
@@ -171,9 +172,16 @@ app.get("/api/users/getUserInfo", (req, res) => {
 
 app.get("/api/clothes/listing", (req, res) => {
   // 옷 정보 가져오기 ( 조회 )
+  const sName = req.query.name;
+  const temp = { category: req.query.category, season: req.query.season };
+  let search = _.pickBy(temp, _.identity);
+  console.log(temp);
   Clothes.find(
-    // { name: req.body.name, uploader: req.body.email },
-    { useremail: req.cookies.email },
+    {
+      useremail: req.cookies.email,
+      name: { $regex: sName, $options: "i" },
+      ...search,
+    },
     (err, clothes) => {
       if (!clothes) {
         return res.json({
@@ -198,7 +206,6 @@ app.post("/api/clothes/updateFav", (req, res) => {
       { _id: req.body._id },
       { fav: !cloth.fav },
       (err, cloth) => {
-        console.log(cloth.fav);
         if (err) return res.json({ success: false, err });
         return res.status(200).send({
           success: true,

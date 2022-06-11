@@ -1,3 +1,4 @@
+import _ from "lodash";
 import axios from "axios";
 import {
   LOGIN_USER,
@@ -6,8 +7,11 @@ import {
   UPLOAD_CLOTHES,
   USER_INFO,
   FAV_UPDATE,
+  CLOTHES_LISTING,
+  FAV_LISTING,
 } from "./types";
 
+// 로그인
 export function loginUser(dataToSubmit) {
   const request = axios
     .post("/api/users/login", dataToSubmit)
@@ -15,6 +19,7 @@ export function loginUser(dataToSubmit) {
   return { type: LOGIN_USER, payload: request };
 }
 
+// 회원가입
 export function registerUser(dataToSubmit) {
   const request = axios
     .post("/api/users/register", dataToSubmit)
@@ -22,6 +27,7 @@ export function registerUser(dataToSubmit) {
   return { type: REGISTER_USER, payload: request };
 }
 
+// 페이지 권한 확인
 export function auth() {
   const request = axios
     .post("/api/users/auth")
@@ -29,6 +35,7 @@ export function auth() {
   return { type: AUTH_USER, payload: request };
 }
 
+// 옷 업로드
 export async function uploadClothes(dataToSubmit) {
   const request = await axios.post("/api/clothes/upload", dataToSubmit);
   return { type: UPLOAD_CLOTHES, payload: request.data };
@@ -40,7 +47,21 @@ export async function getUserInfo() {
   return { type: USER_INFO, payload: request.data };
 }
 
+// 즐겨찾기 등록 해제
 export async function updateFavorite(dataToSubmit) {
   const request = await axios.post("/api/clothes/updateFav", dataToSubmit);
   return { type: FAV_UPDATE, payload: request.data };
+}
+
+// 옷 목록 조회
+export async function getClothes(filter) {
+  // const params = _.pickBy(filter, _.identity);
+  const request = await axios.get("/api/clothes/listing", { params: filter });
+  return { type: CLOTHES_LISTING, payload: request.data };
+}
+
+// 즐겨찾기된 옷 목록 가져오기
+export async function getFavClothes() {
+  const request = await axios.get("/api/clothes/listingFav");
+  return { type: FAV_LISTING, payload: request.data };
 }

@@ -12,6 +12,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
 import { ReactComponent as PlusSvgIcon } from "../assets/plus_icon.svg";
+import { getClothes } from "../../../_actions/user_action";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -41,7 +42,7 @@ const FilterWrapper = styled.div`
   margin: 0px 0px 16px 0px;
   padding: 16px 20px 4px 20px;
   border-radius: 0px;
-  box-shadow: 0px 1px 4px rgba(0,0,0,.3);
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
   background-color: white;
 `;
 
@@ -87,16 +88,27 @@ function MainPage() {
   const [clothes, setClothes] = useState([]);
 
   useEffect(() => {
-    const getClothesAsync = async () => {
-      const response = await axios.get("/api/clothes/listing");
-      if (!response?.data?.success) {
-        return setClothes([]);
-      }
-      const newClothes = response.data.clothes;
-      return setClothes(newClothes);
+    const fetchClothesList = async () => {
+      let filter = {
+        name: searchclothes,
+        category: searchCat,
+        season: searchSeason,
+      };
+
+      console.log(filter);
+      const response = await getClothes(filter);
+      const newClothes = response.payload.clothes;
+      setClothes(newClothes);
     };
-    getClothesAsync();
-  }, []);
+    fetchClothesList();
+  }, [
+    searchclothes,
+    setSearch,
+    searchCat,
+    setsCategory,
+    searchSeason,
+    setsSeason,
+  ]);
 
   const onCategoryHandler = (event) => {
     setsCategory(event.target.value);
@@ -110,13 +122,13 @@ function MainPage() {
 
   const navigate = useNavigate();
 
-  const onSubmitHandler = (event) => {
-    event.preventDefault();
+  // const onSubmitHandler = (event) => {
+  //   event.preventDefault();
 
-    if (searchclothes === "") {
-      return alert("검색어를 입력하세요!");
-    }
-  };
+  //   if (searchclothes === "") {
+  //     return alert("검색어를 입력하세요!");
+  //   }
+  // };
 
   const PlusBtnHandler = (event) => {
     navigate("/uploadclothes");

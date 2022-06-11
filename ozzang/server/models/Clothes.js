@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-const res = require("express/lib/response");
-const jwt = require("jsonwebtoken");
 
 const ClothesSchema = mongoose.Schema({
   useremail: {
