@@ -142,7 +142,7 @@ app.post("/api/clothes/upload", async (req, res) => {
   console.log("successfully uploaded the image!");
 
   let row = {
-    useremail: req.body.useremail,
+    useremail: req.cookies.email,
     name: req.body.name,
     brand: req.body.brand,
     price: req.body.price,
@@ -268,7 +268,7 @@ app.post("/api/style/upload", async (req, res) => {
   console.log("successfully uploaded the image!");
 
   let row = {
-    useremail: req.body.useremail,
+    useremail: req.cookies.email,
     name: req.body.name,
     season: req.body.season,
     imgUrl: `${S3_BUCKET_URL}/${key}.${type}`,
@@ -313,28 +313,7 @@ app.get("api/style/listing", (req, res) => {
 });
 
 // 옷 정보 업데이트
-app.post("api/clothes/update", async (req, res) => {
-  // base64 decoding.
-  const base64EncodedImage = req.body.img;
-  const decodedImage = new Buffer.from(
-    base64EncodedImage.replace(/^data:image\/\w+;base64,/, ""),
-    "base64"
-  );
-  const type = base64EncodedImage.split(";")[0].split("/")[1];
-  const key = Math.random().toString(36).substring(2, 11);
-
-  // s3 upload 위한 변수
-  let s3uploadData = {
-    Key: `${key}.${type}`,
-    Body: decodedImage,
-    ContentEncoding: "base64",
-    ContentType: `image/${type}`,
-  };
-
-  // s3 upload 및 완료 대기.
-  await s3Bucket.putObject(s3uploadData).promise();
-  console.log("successfully uploaded the image!");
-
+app.post("/api/clothes/update", async (req, res) => {
   Clothes.findOneAndUpdate(
     {
       _id: req.body._id,
@@ -347,16 +326,15 @@ app.post("api/clothes/update", async (req, res) => {
       season: req.body.season,
       purchasePlace: req.body.purchasePlace,
       purchaseDate: req.body.purchaseDate,
-      imgUrl: `${S3_BUCKET_URL}/${key}.${type}`,
     },
     (err, newClothes) => {
       if (err)
         return res.json({
-          ClothesupdateSuccess: false,
+          success: false,
           err,
         });
-      return res.status(200).send({
-        ClothesUpdateSuccess: true,
+      return res.status(200).json({
+        success: true,
       });
     }
   );

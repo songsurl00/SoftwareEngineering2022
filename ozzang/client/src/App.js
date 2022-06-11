@@ -11,6 +11,7 @@ import Auth from "./hoc/auth";
 import ProfilePage from "./components/views/ProfilePage/ProfilePage";
 import StylePage from "./components/views/MainPage/StylePage";
 import SharePage from "./components/views/MainPage/SharePage";
+import UpdateClothesPage from "./components/views/UploadClothesPage/UpdateClothes";
 
 const AuthProfilePage = Auth(ProfilePage, true);
 const AuthLandingPage = Auth(LandingPage, null); // 랜딩페이지->메인페이지로 변경해서 사용안함.
@@ -21,6 +22,7 @@ const AuthClothesDetailPage = Auth(ClothesDetailPage, true);
 const AuthStylePage = Auth(StylePage, true);
 const AuthSharePage = Auth(SharePage, true);
 const AuthUploadClothesPage = Auth(UploadClothesPage, true);
+const AuthUpdateClothesPage = Auth(UpdateClothesPage, true);
 function App() {
   return (
     <Router>
@@ -37,12 +39,19 @@ function App() {
           <Route path="/login" element={<AuthLoginPage />} />
           <Route path="/register" element={<AuthRegisterPage />} />
           <Route path="/main" element={<AuthMainPage />} />
-          <Route path="/cloth/:cloth_id" element={<AuthClothesDetailPage/>} />
-          <Route path="/uploadClothes" element={<AuthUploadClothesPage />} />
+          <Route path="/cloth/:cloth_id" element={<AuthClothesDetailPage />} />
+          <Route
+            path="/uploadClothes/:cloth_id"
+            element={<AuthUploadClothesPage />}
+          />
           <Route path="/profile" element={<AuthProfilePage />} />
           <Route path="/findAccount" />
           <Route path="/share" element={<AuthSharePage />} />
           <Route path="/style" element={<AuthStylePage />} />
+          <Route
+            path="/updateClothes/:cloth_id"
+            element={<AuthUpdateClothesPage />}
+          />
           {/* findaccount 아직 연결 안함. */}
         </Routes>
       </div>

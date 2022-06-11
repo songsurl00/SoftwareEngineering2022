@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { uploadClothes } from "../../../_actions/user_action";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "@emotion/styled";
+import { updateClothes } from "../../../_actions/user_action";
+import axios from "axios";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -52,24 +53,11 @@ const UploadBox = styled.form`
   }
 `;
 
-function UploadClothesPage() {
+function UpdateClothesPage() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [userInfo, setUserInfo] = useState({});
 
   // 이미지 업로드을 위한 Base64 변환.
   const [ImageSrc, setImageSrc] = useState("");
-
-  const encFileToBase64 = (fileBlob) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(fileBlob);
-    return new Promise((resolve) => {
-      reader.onload = () => {
-        setImageSrc(reader.result);
-        resolve();
-      };
-    });
-  };
 
   const [Name, setName] = useState("");
   const [Brand, setBrand] = useState("");
@@ -78,6 +66,26 @@ function UploadClothesPage() {
   const [Season, setSeason] = useState("봄");
   const [PurchasePlace, setPurchasePlace] = useState("");
   const [PurchaseDate, setPurchaseDate] = useState("");
+  const params = useParams();
+
+  // const [cloth, setCloth] = useState({});
+
+  useEffect(() => {
+    const getCloth = async () => {
+      const response = await axios.get(`/api/clothes/${params.cloth_id}`);
+      const newCloth = response?.data?.cloth;
+      // setCloth(newCloth);
+      setName(newCloth.name);
+      setBrand(newCloth?.brand);
+      setPrice(newCloth?.price);
+      setCategory(newCloth?.category);
+      setSeason(newCloth?.season);
+      setImageSrc(newCloth?.imgUrl);
+      setPurchasePlace(newCloth?.purchasePlace);
+      setPurchaseDate(newCloth?.purchaseDate.split("T")[0]);
+    };
+    getCloth();
+  }, []);
 
   const onNameHandler = (event) => {
     setName(event.currentTarget.value);
@@ -109,7 +117,7 @@ function UploadClothesPage() {
     }
 
     let body = {
-      useremail: userInfo.email,
+      _id: params.cloth_id,
       name: Name,
       brand: Brand,
       price: Price,
@@ -117,13 +125,12 @@ function UploadClothesPage() {
       season: Season,
       purchasePlace: PurchasePlace,
       purchaseDate: PurchaseDate,
-      img: ImageSrc,
     };
-    uploadClothes(body).then((response) => {
+    updateClothes(body).then((response) => {
       if (response.payload.success) {
         navigate("/main");
       } else {
-        alert("Failed to Upload");
+        alert("Failed to Update");
       }
     });
   };
@@ -131,7 +138,7 @@ function UploadClothesPage() {
   // console.log(ImageSrc);
   return (
     <Wrapper>
-      <Title>옷 등록</Title>
+      <Title>옷 정보 수정</Title>
       <InputWrapper>
         <UploadBox onSubmit={onSubmitHandler}>
           <div>
@@ -143,12 +150,6 @@ function UploadClothesPage() {
               />
             )}
           </div>
-          <input
-            type="file"
-            onChange={(e) => {
-              encFileToBase64(e.target.files[0]);
-            }}
-          />
 
           <label>옷 이름</label>
           <input type="text" value={Name} onChange={onNameHandler} />
@@ -189,10 +190,10 @@ function UploadClothesPage() {
             value={PurchaseDate}
             onChange={onPurchaseDateHandler}
           />
-          <button type="submit">옷 등록하기</button>
+          <button type="submit">옷 수정하기</button>
         </UploadBox>
       </InputWrapper>
     </Wrapper>
   );
 }
-export default UploadClothesPage;
+export default UpdateClothesPage;
