@@ -18,9 +18,9 @@ const Footer = styled.div`
     margin-bottom: 0;
 
     a {
-      color: #607191;
+      color: #248afd;
       text-decoration: none;
-      opacity: 0.6;
+      opacity: 0.8;
     }
   }
   .item {
@@ -31,7 +31,7 @@ const Footer = styled.div`
 const Title = styled.div`
   color: #c7ccd6;
   margin-top: 0;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
   font-weight: bold;
   font-size: 30px;
 `;
@@ -47,15 +47,12 @@ const Col = styled.div`
   text-align: center;
 
   li {
-    color: #ccd5e6;
+    color: #808080;
     font-size: 15px;
-    &:first-child {
-      margin-top: 15px;
-    }
   }
 
   p {
-    color: gray;
+    color: #808080;
   }
 `;
 
@@ -64,7 +61,7 @@ function MainPageFooter() {
     <Footer>
       <FooterContainer>
         <Row>
-          <Col class="item">
+          <Col className="item">
             <Title>About Ozzang</Title>
             <ul>
               <li>
@@ -81,7 +78,7 @@ function MainPageFooter() {
             </ul>
           </Col>
 
-          <Col class="item">
+          <Col className="item">
             <Title>Developers</Title>
             <ul>
               <li>나주엽</li>

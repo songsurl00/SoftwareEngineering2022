@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 import MainPageHeader from "./MainPageHeader";
 import MainPageFooter from "../Footer/Footer";
 
-import { getStyle } from "../../../_actions/user_action";
+import { getStyle, deleteStyle } from "../../../_actions/user_action";
 
 import ClothesSimpleGridWrapper from "../MainPage/ClothesSimpleGridWrapper";
 
@@ -87,6 +87,7 @@ const StyleRowWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 960px;
+  padding: 0px 0px 64px 0px;
 `;
 
 const StyleRowWrapperTitle = styled.div`
@@ -187,11 +188,28 @@ const StyleInforRowSeparator = styled.div`
 `;
 
 const StyleRow = (props) => {
-  const { style } = props;
+  const {style, getRemoveStyle} = props;
+
+  const onDeleteButtonClick = () => {
+    const clickDelete = window.confirm("스타일을 삭제하시겠습니까?");
+    if (!clickDelete) {
+      return;
+    }
+
+    const deleteStyleAsync = async () => {
+      const response = await deleteStyle({_id : style._id});
+      if (!response.payload.success) {
+        return alert('스타일을 삭제하는 중 에러가 발생하였습니다.');
+      }
+      alert('성공적으로 스타일을 삭제했습니다.');
+      getRemoveStyle(style._id);
+    };
+    deleteStyleAsync();
+  };
 
   return (
     <StyleRowDiv>
-      <StyleDeleteButton>삭제하기</StyleDeleteButton>
+      <StyleDeleteButton onClick={onDeleteButtonClick}>삭제하기</StyleDeleteButton>
       <StyleImageWrapper>
         <StyleImage src={style.imgUrl} />
       </StyleImageWrapper>
@@ -240,18 +258,32 @@ function StylePage() {
 
   useEffect(() => {
     const getStyleFromServer = async () => {
-      const response = await getStyle();
-      console.log(response);
-      setStyles(response.payload.style);
+      const filter = {};
+      if (seasonFilter !== "all") {
+        filter.season = seasonFilter
+      }
+      const response = await getStyle(filter);
+      console.log(response)
+      setStyles(response.payload.style)
     };
     getStyleFromServer();
-  }, []);
+  }, [seasonFilter, setSeasonFilter]);
 
   const updateSeasonFilter = useCallback((event) => {
     const newSeasonFilter = event.target.value;
-    console.log(newSeasonFilter);
-    setSeasonFilter(event.target.value);
+    console.log(newSeasonFilter)
+    setSeasonFilter(event.target.value)
   });
+
+  const getRemoveStyle = (styleId) => {
+    const matchedStyleIndex = _.findIndex(styles, (style) => style._id === styleId);
+    if (styleId < 0) {
+      return;
+    }
+    _.pullAt(styles, matchedStyleIndex);
+    const newStyles = _.cloneDeep(styles);
+    setStyles(newStyles);
+  };
 
   return (
     <Wrapper>
@@ -284,12 +316,12 @@ function StylePage() {
           </NewStyleButton>
         </FilterWrapper>
         <StyleRowWrapper>
-          <StyleRowWrapperTitle>
-            스타일 리스트 ({styles.length}개 검색됨)
-          </StyleRowWrapperTitle>
-          {_.map(styles, (style) => {
-            return <StyleRow style={style} />;
-          })}
+          <StyleRowWrapperTitle>스타일 리스트 ({styles.length}개 검색됨)</StyleRowWrapperTitle>
+          {
+            _.map(styles, (style) => {
+              return <StyleRow key={style._id} style={style} getRemoveStyle={getRemoveStyle}/>
+            })
+          }
         </StyleRowWrapper>
         <MainPageFooter />
       </BodyWrapper>

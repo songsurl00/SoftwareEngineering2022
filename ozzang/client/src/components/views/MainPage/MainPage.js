@@ -49,6 +49,7 @@ const FilterWrapper = styled.div`
 
 const ClothesListWrapper = styled.div`
   width: 960px;
+  padding: 0px 0px 64px 0px;
 `;
 
 const NewClothesButton = styled.button`
