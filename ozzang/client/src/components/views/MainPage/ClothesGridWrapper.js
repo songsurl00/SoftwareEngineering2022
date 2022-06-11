@@ -58,7 +58,7 @@ const CardImage = styled.div`
   width: 100%;
 
   background-image: url(https://target.scene7.com/is/image/Target/GUEST_693c1197-393c-4aa5-a4e6-70ec71be5419?wid=315&hei=315&qlt=60&fmt=pjpeg);
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   border-bottom: 1px solid #d4d4d4;
@@ -78,6 +78,9 @@ const CardTitle = styled.div`
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow:hidden;
 `;
 
 const CardInfo = styled.div`

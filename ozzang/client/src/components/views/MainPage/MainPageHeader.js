@@ -73,7 +73,6 @@ function MainPageHeader() {
       <HeaderTabWrapper>
         <HeaderTab onClick={getNavigateFunc("/main")}>Clothes</HeaderTab>
         <HeaderTab onClick={getNavigateFunc("/style")}>Style</HeaderTab>
-        <HeaderTab onClick={getNavigateFunc("/fav")}>Favorite</HeaderTab>
         <HeaderTab onClick={getNavigateFunc("/share")}>Share</HeaderTab>
         <HeaderTab onClick={getNavigateFunc("/profile")}>Profile</HeaderTab>
       </HeaderTabWrapper>

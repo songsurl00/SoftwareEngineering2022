@@ -84,6 +84,7 @@ function MainPage() {
   const [searchclothes, setSearch] = useState(""); // 검색을 위한 state
   const [searchCat, setsCategory] = useState("");
   const [searchSeason, setsSeason] = useState("");
+  const [searchFav, setSearchFav] = useState("");
 
   const [clothes, setClothes] = useState([]);
 
@@ -93,6 +94,7 @@ function MainPage() {
         name: searchclothes,
         category: searchCat,
         season: searchSeason,
+        fav: searchFav,
       };
 
       console.log(filter);
@@ -108,6 +110,8 @@ function MainPage() {
     setsCategory,
     searchSeason,
     setsSeason,
+    searchFav,
+    setSearchFav,
   ]);
 
   const onCategoryHandler = (event) => {
@@ -119,16 +123,11 @@ function MainPage() {
   const onSearchHandler = (event) => {
     setSearch(event.currentTarget.value);
   };
+  const onFavHandler = (event) => {
+    setSearchFav(event.target.value);
+  }
 
   const navigate = useNavigate();
-
-  // const onSubmitHandler = (event) => {
-  //   event.preventDefault();
-
-  //   if (searchclothes === "") {
-  //     return alert("검색어를 입력하세요!");
-  //   }
-  // };
 
   const PlusBtnHandler = (event) => {
     navigate("/uploadclothes");
@@ -176,6 +175,18 @@ function MainPage() {
               <MenuItem value="여름">여름</MenuItem>
               <MenuItem value="가을">가을</MenuItem>
               <MenuItem value="겨을">겨을</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl sx={{ minWidth: 120, marginRight: 2 }}>
+            <InputLabel id="main-page-fav-filter-label">즐겨찾기</InputLabel>
+            <Select
+              labelId="main-page-fav-filter-label"
+              value={searchFav}
+              label="즐겨찾기"
+              onChange={onFavHandler}
+            >
+              <MenuItem value="">전체</MenuItem>
+              <MenuItem value="true">즐겨찾기만</MenuItem>
             </Select>
           </FormControl>
           <TextField

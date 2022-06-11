@@ -85,8 +85,8 @@ function UploadClothesPage() {
   const [Name, setName] = useState("");
   const [Brand, setBrand] = useState("");
   const [Price, setPrice] = useState("");
-  const [Category, setCategory] = useState("");
-  const [Season, setSeason] = useState("");
+  const [Category, setCategory] = useState("상의");
+  const [Season, setSeason] = useState("봄");
   const [PurchasePlace, setPurchasePlace] = useState("");
   const [PurchaseDate, setPurchaseDate] = useState("");
 
@@ -130,7 +130,6 @@ function UploadClothesPage() {
       purchaseDate: PurchaseDate,
       img: ImageSrc,
     };
-
     uploadClothes(body).then((response) => {
       if (response.payload.success) {
         navigate("/main");

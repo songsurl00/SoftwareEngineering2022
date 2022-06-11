@@ -173,7 +173,11 @@ app.get("/api/users/getUserInfo", (req, res) => {
 app.get("/api/clothes/listing", (req, res) => {
   // 옷 정보 가져오기 ( 조회 )
   const sName = req.query.name;
-  const temp = { category: req.query.category, season: req.query.season };
+  const temp = {
+    category: req.query.category,
+    season: req.query.season,
+    fav: req.query.fav === 'true',
+  };
   let search = _.pickBy(temp, _.identity);
   console.log(temp);
   Clothes.find(
