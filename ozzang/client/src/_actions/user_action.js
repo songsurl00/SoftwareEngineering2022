@@ -14,6 +14,7 @@ import {
   DELETE_CLOTHES,
   WITHDRAWAL_USER,
   SHARED_LISTING,
+  DELETE_STYLE,
 } from "./types";
 
 // 로그인
@@ -107,4 +108,10 @@ export async function getSharedStyle(dataToSubmit) {
     params: dataToSubmit,
   });
   return { type: SHARED_LISTING, payload: request.data };
+}
+
+// 스타일 삭제
+export async function deleteStyle(dataToSubmit) {
+  const request = await axios.post("/api/style/delete", dataToSubmit);
+  return { type: DELETE_STYLE, payload: request.data };
 }

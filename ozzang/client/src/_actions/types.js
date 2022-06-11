@@ -13,3 +13,4 @@ export const STYLE_LISTING = "style_listing";
 export const UPDATE_CLOTHES = "update_clothes";
 export const DELETE_CLOTHES = "delete_clothes";
 export const SHARED_LISTING = "shared_listing";
+export const DELETE_STYLE = "delete_style";

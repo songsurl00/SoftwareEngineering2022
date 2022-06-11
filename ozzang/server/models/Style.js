@@ -22,7 +22,7 @@ const StyleSchema = mongoose.Schema({
     type: String,
     maxlength: 300,
   },
-  clotheslist: { type: [mongoose.Schema.Types.ObjectId] },
+  clotheslist: { type: [mongoose.Schema.Types.ObjectId], ref: "Clothes" },
 });
 
 //  [{ type : ObjectId, ref: 'User' }]

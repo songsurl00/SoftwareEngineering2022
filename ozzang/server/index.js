@@ -397,7 +397,7 @@ app.get("/api/style/listing", (req, res) => {
       } else {
         return res.json({
           success: true,
-          data,
+          style,
         });
       }
     });
@@ -422,4 +422,20 @@ app.get("/api/style/listingshared", (req, res) => {
         });
       }
     });
+});
+
+// 스타일 삭제
+app.post("/api/style/delete", async (req, res) => {
+  Style.findOneAndDelete(
+    {
+      useremail: req.cookies.email,
+      _id: req.body._id,
+    },
+    (err, result) => {
+      if (err) return res.json({ success: false, err });
+      return res.status(200).json({
+        success: true,
+      });
+    }
+  );
 });
