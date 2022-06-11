@@ -11,6 +11,7 @@ import {
   UPLOAD_STYLE,
   STYLE_LISTING,
   UPDATE_CLOTHES,
+  DELETE_CLOTHES,
 } from "./types";
 
 // 로그인
@@ -80,4 +81,10 @@ export async function getStyle(dataToSubmit) {
 export async function updateClothes(dataToSubmit) {
   const request = await axios.post("/api/clothes/update", dataToSubmit);
   return { type: UPDATE_CLOTHES, payload: request.data };
+}
+
+// 옷 삭제
+export async function deleteClothes(dataToSubmit) {
+  const request = await axios.post("/api/clothes/delete", dataToSubmit);
+  return { type: DELETE_CLOTHES, payload: request.data };
 }

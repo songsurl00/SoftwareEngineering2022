@@ -10,3 +10,4 @@ export const FAV_LISTING = "favorite_listing";
 export const UPLOAD_STYLE = "upload_style";
 export const STYLE_LISTING = "style_listing";
 export const UPDATE_CLOTHES = "update_clothes";
+export const DELETE_CLOTHES = "delete_clothes";

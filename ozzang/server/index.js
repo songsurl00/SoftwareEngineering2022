@@ -339,3 +339,18 @@ app.post("/api/clothes/update", async (req, res) => {
     }
   );
 });
+
+// 옷 삭제
+app.post("/api/clothes/delete", async (req, res) => {
+  Clothes.findOneAndDelete(
+    {
+      _id: req.body._id,
+    },
+    (err, result) => {
+      if (err) return res.json({ success: false, err });
+      return res.status(200).json({
+        success: true,
+      });
+    }
+  );
+});

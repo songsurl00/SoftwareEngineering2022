@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 import { ReactComponent as HeartSvgIcon } from "../assets/heart_icon.svg";
+import { deleteClothes } from "../../../_actions/user_action";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -171,7 +172,13 @@ const ClothesDetailPage = () => {
     },
     [cloth]
   );
-  const onDeleteButtonClick = useCallback(() => {}, []);
+  const onDeleteButtonClick = useCallback(
+    (event) => {
+      deleteClothes(cloth);
+      navigate("/main");
+    },
+    [cloth]
+  );
 
   return (
     <Wrapper>
