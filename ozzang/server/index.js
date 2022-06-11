@@ -198,6 +198,28 @@ app.get("/api/clothes/listing", (req, res) => {
   );
 });
 
+app.get("/api/clothes/:clothId", (req, res) => {
+  // 옷 정보 가져오기 ( 조회 )
+  
+  Clothes.find(
+    // { name: req.body.name, uploader: req.body.email },
+    { useremail: req.cookies.email, _id: req.params.clothId },
+    (err, clothes) => {
+      if (!clothes) {
+        return res.json({
+          clotehsSearchSuccess: false,
+          message: "해당 정보에 맞는 옷이 없습니다.",
+        });
+      } else {
+        return res.json({
+          success: true,
+          cloth: clothes[0],
+        });
+      }
+    }
+  );
+});
+
 // 옷 즐겨찾기 설정 및 해제 동작
 app.post("/api/clothes/updateFav", (req, res) => {
   Clothes.findOne({ _id: req.body._id }, (err, cloth) => {
