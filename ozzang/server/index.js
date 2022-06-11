@@ -143,6 +143,8 @@ app.get("/api/users/logout", auth, (req, res) => {
 //   );
 // });
 
+// 옷 관련 --------------------------------------------------------------------------
+
 // 옷 업로드 라우트
 app.post("/api/clothes/upload", async (req, res) => {
   // 옷 정보에 필요한 정보를 클라이언트에서 가져와서
@@ -273,6 +275,52 @@ app.post("/api/clothes/updateFav", (req, res) => {
   });
 });
 
+// 옷 정보 업데이트
+app.post("/api/clothes/update", async (req, res) => {
+  Clothes.findOneAndUpdate(
+    {
+      _id: req.body._id,
+    },
+    {
+      name: req.body.name,
+      brand: req.body.brand,
+      price: req.body.price,
+      category: req.body.category,
+      season: req.body.season,
+      purchasePlace: req.body.purchasePlace,
+      purchaseDate: req.body.purchaseDate,
+    },
+    (err, newClothes) => {
+      if (err)
+        return res.json({
+          success: false,
+          err,
+        });
+      return res.status(200).json({
+        success: true,
+      });
+    }
+  );
+});
+
+// 옷 삭제
+app.post("/api/clothes/delete", async (req, res) => {
+  Clothes.findOneAndDelete(
+    {
+      _id: req.body._id,
+    },
+    (err, result) => {
+      if (err) return res.json({ success: false, err });
+      return res.status(200).json({
+        success: true,
+      });
+    }
+  );
+});
+
+// 스타일 관련 ------------------------------------------------------------
+
+// 스타일 업로드
 app.post("/api/style/upload", async (req, res) => {
   let row;
   console.log(req.body.img);
@@ -333,15 +381,15 @@ app.post("/api/style/upload", async (req, res) => {
 });
 
 // 스타일 목록, 정보 가져오기 (조회)
-app.get("api/style/listing", (req, res) => {
+app.get("/api/style/listing", (req, res) => {
   Style.find({
     useremail: req.cookies.email,
     ...req.query,
   })
     .populate("clotheslist")
     .exec((err, style) => {
-      console.log(data);
-      if (!data) {
+      console.log(style);
+      if (!style) {
         return res.join({
           styleSearchSuccess: false,
           messaage: "해당 정보에 맞는 스타일이 없습니다.",
@@ -355,45 +403,23 @@ app.get("api/style/listing", (req, res) => {
     });
 });
 
-// 옷 정보 업데이트
-app.post("/api/clothes/update", async (req, res) => {
-  Clothes.findOneAndUpdate(
-    {
-      _id: req.body._id,
-    },
-    {
-      name: req.body.name,
-      brand: req.body.brand,
-      price: req.body.price,
-      category: req.body.category,
-      season: req.body.season,
-      purchasePlace: req.body.purchasePlace,
-      purchaseDate: req.body.purchaseDate,
-    },
-    (err, newClothes) => {
-      if (err)
-        return res.json({
-          success: false,
-          err,
+// 공유 스타일 조회
+app.get("/api/style/listingshared", (req, res) => {
+  Style.find({
+    share: true,
+  })
+    .populate("clotheslist")
+    .exec((err, style) => {
+      if (!style) {
+        return res.join({
+          styleSearchSuccess: false,
+          messaage: "해당 정보에 맞는 스타일이 없습니다.",
         });
-      return res.status(200).json({
-        success: true,
-      });
-    }
-  );
-});
-
-// 옷 삭제
-app.post("/api/clothes/delete", async (req, res) => {
-  Clothes.findOneAndDelete(
-    {
-      _id: req.body._id,
-    },
-    (err, result) => {
-      if (err) return res.json({ success: false, err });
-      return res.status(200).json({
-        success: true,
-      });
-    }
-  );
+      } else {
+        return res.json({
+          success: true,
+          data,
+        });
+      }
+    });
 });

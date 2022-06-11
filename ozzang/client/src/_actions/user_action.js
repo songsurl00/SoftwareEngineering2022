@@ -13,6 +13,7 @@ import {
   UPDATE_CLOTHES,
   DELETE_CLOTHES,
   WITHDRAWAL_USER,
+  SHARED_LISTING,
 } from "./types";
 
 // 로그인
@@ -45,16 +46,18 @@ export async function withdrawal() {
   return { type: WITHDRAWAL_USER, payload: request.data };
 }
 
-// 옷 업로드
-export async function uploadClothes(dataToSubmit) {
-  const request = await axios.post("/api/clothes/upload", dataToSubmit);
-  return { type: UPLOAD_CLOTHES, payload: request.data };
-}
-
 // 현재 로그인한 사용자 정보 불러오기
 export async function getUserInfo() {
   const request = await axios.get("/api/users/getUserInfo");
   return { type: USER_INFO, payload: request.data };
+}
+
+//---------------------------------------------------------------------
+
+// 옷 업로드
+export async function uploadClothes(dataToSubmit) {
+  const request = await axios.post("/api/clothes/upload", dataToSubmit);
+  return { type: UPLOAD_CLOTHES, payload: request.data };
 }
 
 // 즐겨찾기 등록 해제
@@ -70,6 +73,20 @@ export async function getClothes(filter) {
   return { type: CLOTHES_LISTING, payload: request.data };
 }
 
+// 옷 정보 업데이트
+export async function updateClothes(dataToSubmit) {
+  const request = await axios.post("/api/clothes/update", dataToSubmit);
+  return { type: UPDATE_CLOTHES, payload: request.data };
+}
+
+// 옷 삭제
+export async function deleteClothes(dataToSubmit) {
+  const request = await axios.post("/api/clothes/delete", dataToSubmit);
+  return { type: DELETE_CLOTHES, payload: request.data };
+}
+
+//---------------------------------------------------------------------
+
 // 스타일 업로드
 export async function uploadStyle(dataToSubmit) {
   const request = await axios.post("/api/style/upload", dataToSubmit);
@@ -84,14 +101,10 @@ export async function getStyle(dataToSubmit) {
   return { type: STYLE_LISTING, payload: request.data };
 }
 
-// 옷 정보 업데이트
-export async function updateClothes(dataToSubmit) {
-  const request = await axios.post("/api/clothes/update", dataToSubmit);
-  return { type: UPDATE_CLOTHES, payload: request.data };
-}
-
-// 옷 삭제
-export async function deleteClothes(dataToSubmit) {
-  const request = await axios.post("/api/clothes/delete", dataToSubmit);
-  return { type: DELETE_CLOTHES, payload: request.data };
+// 공유 스타일 조회
+export async function getSharedStyle(dataToSubmit) {
+  const request = await axios.get("/api/style/listingshared", {
+    params: dataToSubmit,
+  });
+  return { type: SHARED_LISTING, payload: request.data };
 }
