@@ -1,5 +1,6 @@
 import _ from "lodash";
 import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import MainPageHeader from "./MainPageHeader";
 
@@ -9,8 +10,8 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
-import ClothesGridWrapper from '../MainPage/ClothesGridWrapper';
-import { getClothes } from "../../../_actions/user_action";
+import ClothesGridWrapper from "../MainPage/ClothesGridWrapper";
+import { getClothes, uploadStyle } from "../../../_actions/user_action";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -41,103 +42,101 @@ const UploaderWrapper = styled.div`
 `;
 
 const UploaderTitle = styled.div`
-width: 100%;
+  width: 100%;
 
-margin: 0px 0px 24px 0px;
-font-size: 22px;
-font-weight: 500;
-line-height: 32px;
+  margin: 0px 0px 24px 0px;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 32px;
 
-color: rgba(0,0,0,.8);
+  color: rgba(0, 0, 0, 0.8);
 `;
 
 const UploaderContent = styled.div`
-display: flex;
-width: 100%;
+  display: flex;
+  width: 100%;
 
-padding: 0px 0px 16px 0px;
-margin: 0px 0px 16px 0px;
+  padding: 0px 0px 16px 0px;
+  margin: 0px 0px 16px 0px;
 
-border-bottom: 1px solid rgba(0,0,0,.2);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 `;
 
 const StyleInformationColumn = styled.div`
-flex: 1 0 0px;
+  flex: 1 0 0px;
 `;
 
 const StyleImageColumn = styled.div`
-flex: 0 0 320px;
+  flex: 0 0 320px;
 
-padding-right: 24px;
-margin-right: 24px;
-border-right: 1px solid rgba(0,0,0,.2);
+  padding-right: 24px;
+  margin-right: 24px;
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
 `;
 
 const BaseInformationWrapper = styled.div`
-width: 100%;
+  width: 100%;
 
-padding: 16px 24px 24px 24px;
-background-color: white;
+  padding: 16px 24px 24px 24px;
+  background-color: white;
 
-
-box-shadow: 0px 1px 4px rgba(0,0,0,.4);
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.4);
 `;
 
 const UploadStyleButton = styled.button`
-display: block;
-width: 160px;
-height: 48px;
+  display: block;
+  width: 160px;
+  height: 48px;
 
-padding: 0px;
-margin: 0px 0px 0px auto;
-font-size: 16px;
-font-weight: 500;
-line-height: 48px;
+  padding: 0px;
+  margin: 0px 0px 0px auto;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 48px;
 
-border: none;
-border-radius: 8px;
-color: white;
-background-color: #71c02b;
-cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  background-color: #71c02b;
+  cursor: pointer;
 
-transition: box-shadow .2s;
+  transition: box-shadow 0.2s;
 
-&:hover {
-  box-shadow: 0px 1px 4px rgba(0,0,0,.2);
-}
-
+  &:hover {
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
+  }
 `;
 
 function UploadStylePage() {
-
   const [clothes, setClothes] = useState([]);
   const [selectedClothes, setSelectedClothes] = useState([]);
 
   useEffect(() => {
     const fetchClothesList = async () => {
       let filter = {
-        name: '',
-        category: '',
-        season: '',
-        fav: '',
+        name: "",
+        category: "",
+        season: "",
+        fav: "",
       };
       const response = await getClothes(filter);
-      console.log(response)
       const newClothes = response.payload.clothes;
-      console.log(newClothes)
       setClothes(newClothes);
     };
     fetchClothesList();
   }, []);
 
   const onClothClick = (cloth) => {
-    const clothIndex = _.findIndex(selectedClothes, (sel)=> sel._id === cloth._id);
+    const clothIndex = _.findIndex(
+      selectedClothes,
+      (sel) => sel._id === cloth._id
+    );
     if (clothIndex < 0) {
       selectedClothes.push(_.cloneDeep(cloth));
     } else {
-      _.pullAt(selectedClothes, [clothIndex])
+      _.pullAt(selectedClothes, [clothIndex]);
     }
-    setSelectedClothes(_.cloneDeep(selectedClothes))
+    setSelectedClothes(_.cloneDeep(selectedClothes));
   };
 
   const [style, setStyle] = useState({
@@ -159,21 +158,20 @@ function UploadStylePage() {
 
   const updateSeason = useCallback((event) => {
     const season = event.target.value;
-    setStyle({ ...style, season })
+    setStyle({ ...style, season });
   });
 
   const updateShare = useCallback((event) => {
     const share = event.target.value;
-    setStyle({ ...style, share })
+    setStyle({ ...style, share });
   });
-
 
   // 이미지 업로드을 위한 Base64 변환.
   const [fileName, setFileName] = useState("선택된 파일 없음");
   const [imageSrc, setImageSrc] = useState("");
 
   const encFileToBase64 = (fileBlob) => {
-    setFileName(fileBlob.name)
+    setFileName(fileBlob.name);
     const reader = new FileReader();
     reader.readAsDataURL(fileBlob);
     return new Promise((resolve) => {
@@ -184,9 +182,27 @@ function UploadStylePage() {
     });
   };
 
+  const navigate = useNavigate();
+
+  const onSaveButtonClick = useCallback(
+    (event) => {
+      const selectedClothesID = selectedClothes.map((clothes) => clothes._id);
+      console.log(selectedClothesID);
+      let body = {
+        img: imageSrc,
+        ...style,
+        clothesList: selectedClothesID,
+      };
+      console.log(body);
+      uploadStyle(body);
+      navigate("/style");
+    },
+    [style, selectedClothes, imageSrc]
+  );
+
   return (
     <Wrapper>
-      <MainPageHeader/>
+      <MainPageHeader />
       <BodyWrapper>
         <UploaderWrapper>
           <BaseInformationWrapper>
@@ -198,28 +214,33 @@ function UploadStylePage() {
                     <img
                       src={imageSrc}
                       alt="preview-img"
-                      style={{ width: "295px", height: "295px", marginBottom: '16px', objectFit: 'cover' }}
+                      style={{
+                        width: "295px",
+                        height: "295px",
+                        marginBottom: "16px",
+                        objectFit: "cover",
+                      }}
                     />
                   )}
                 </div>
-                  <input
-                    type="file"
-                    onChange={(e) => {
-                      encFileToBase64(e.target.files[0]);
-                    }}
-                  />
+                <input
+                  type="file"
+                  onChange={(e) => {
+                    encFileToBase64(e.target.files[0]);
+                  }}
+                />
               </StyleImageColumn>
               <StyleInformationColumn>
-                <TextField 
-                  sx={{ minWidth: 320, marginRight: 2, marginBottom: '24px' }}
+                <TextField
+                  sx={{ minWidth: 320, marginRight: 2, marginBottom: "24px" }}
                   label="스타일 명"
                   value={style.name}
                   onChange={updateName}
                   variant="outlined"
                   fullWidth
                 />
-                <TextField 
-                  sx={{ minWidth: 320, marginRight: 2, marginBottom: '24px' }}
+                <TextField
+                  sx={{ minWidth: 320, marginRight: 2, marginBottom: "24px" }}
                   label="설명"
                   multiline
                   rows={5}
@@ -229,7 +250,9 @@ function UploadStylePage() {
                   fullWidth
                 />
                 <FormControl sx={{ minWidth: 276, marginRight: 2 }}>
-                  <InputLabel id="upload-style-page-season-label">계절</InputLabel>
+                  <InputLabel id="upload-style-page-season-label">
+                    계절
+                  </InputLabel>
                   <Select
                     labelId="upload-style-page-season-label"
                     value={style.season}
@@ -243,7 +266,9 @@ function UploadStylePage() {
                   </Select>
                 </FormControl>
                 <FormControl sx={{ minWidth: 276 }}>
-                  <InputLabel id="upload-style-page-share-label">공개여부</InputLabel>
+                  <InputLabel id="upload-style-page-share-label">
+                    공개여부
+                  </InputLabel>
                   <Select
                     labelId="upload-style-page-share-label"
                     value={style.share}
@@ -258,10 +283,11 @@ function UploadStylePage() {
             </UploaderContent>
             <UploaderTitle>
               옷 선택하기
-              {selectedClothes.length ? `(${selectedClothes.length}개 선택됨)` : ""}
+              {selectedClothes.length
+                ? `(${selectedClothes.length}개 선택됨)`
+                : ""}
             </UploaderTitle>
             <UploaderContent>
-
               <ClothesGridWrapper
                 clothes={clothes}
                 setClothes={setClothes}
@@ -269,9 +295,10 @@ function UploadStylePage() {
                 selectedClothes={selectedClothes}
               />
             </UploaderContent>
-            <UploadStyleButton>저장하기</UploadStyleButton>
+            <UploadStyleButton onClick={onSaveButtonClick}>
+              저장하기
+            </UploadStyleButton>
           </BaseInformationWrapper>
-          
         </UploaderWrapper>
       </BodyWrapper>
     </Wrapper>

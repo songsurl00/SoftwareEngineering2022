@@ -109,7 +109,6 @@ function UploadClothesPage() {
     }
 
     let body = {
-      useremail: userInfo.email,
       name: Name,
       brand: Brand,
       price: Price,

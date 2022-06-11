@@ -22,11 +22,11 @@ const StyleSchema = mongoose.Schema({
     type: String,
     maxlength: 300,
   },
-  clohteslist: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Clothes",
-  },
+  clotheslist: { type: [mongoose.Schema.Types.ObjectId] },
 });
+
+//  [{ type : ObjectId, ref: 'User' }]
+// friends: [{ type : ObjectId, ref: 'User' }],
 
 const Style = mongoose.model("Style", StyleSchema);
 

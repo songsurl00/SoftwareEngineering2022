@@ -274,38 +274,53 @@ app.post("/api/clothes/updateFav", (req, res) => {
 });
 
 app.post("/api/style/upload", async (req, res) => {
-  // base64 decoding.
-  const base64EncodedImage = req.body.img;
-  const decodedImage = new Buffer.from(
-    base64EncodedImage.replace(/^data:image\/\w+;base64,/, ""),
-    "base64"
-  );
-  const type = base64EncodedImage.split(";")[0].split("/")[1];
-  const key = Math.random().toString(36).substring(2, 11);
+  let row;
+  console.log(req.body.img);
+  if (!(req.body.img === "")) {
+    // base64 decoding.
+    const base64EncodedImage = req.body.img;
+    const decodedImage = new Buffer.from(
+      base64EncodedImage.replace(/^data:image\/\w+;base64,/, ""),
+      "base64"
+    );
+    const type = base64EncodedImage.split(";")[0].split("/")[1];
+    const key = Math.random().toString(36).substring(2, 11);
 
-  // s3 upload 위한 변수
-  let s3uploadData = {
-    Key: `${key}.${type}`,
-    Body: decodedImage,
-    ContentEncoding: "base64",
-    ContentType: `image/${type}`,
-  };
+    // s3 upload 위한 변수
+    let s3uploadData = {
+      Key: `${key}.${type}`,
+      Body: decodedImage,
+      ContentEncoding: "base64",
+      ContentType: `image/${type}`,
+    };
 
-  // s3 upload 및 완료 대기.
-  await s3Bucket.putObject(s3uploadData).promise();
-  console.log("successfully uploaded the image!");
+    // s3 upload 및 완료 대기.
+    await s3Bucket.putObject(s3uploadData).promise();
+    console.log("successfully uploaded the image!");
 
-  let row = {
-    useremail: req.cookies.email,
-    name: req.body.name,
-    season: req.body.season,
-    imgUrl: `${S3_BUCKET_URL}/${key}.${type}`,
-    description: req.body.description,
-    clotheslist: req.body.clotheslist,
-  };
+    row = {
+      useremail: req.cookies.email,
+      name: req.body.name,
+      season: req.body.season,
+      imgUrl: `${S3_BUCKET_URL}/${key}.${type}`,
+      description: req.body.description,
+      clotheslist: req.body.clothesList,
+      share: req.body.share,
+    };
+  } else {
+    console.log(req.body.clothesList);
+    row = {
+      useremail: req.cookies.email,
+      name: req.body.name,
+      season: req.body.season,
+      description: req.body.description,
+      clotheslist: req.body.clothesList,
+      share: req.body.share,
+    };
+  }
 
-  const clothes = new Style(row);
-  clothes.save((err, doc) => {
+  const style = new Style(row);
+  style.save((err, doc) => {
     if (err)
       return res.json({
         success: false,
