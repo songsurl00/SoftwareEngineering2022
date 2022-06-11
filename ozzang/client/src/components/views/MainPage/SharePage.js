@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import MainPageHeader from "./MainPageHeader";
+import MainPageFooter from "../Footer/Footer";
 
 const Wrapper = styled.div`
-  margin: 0;
+  margin: auto;
 `;
 
 const BodyWrapper = styled.div`
@@ -14,8 +15,9 @@ const BodyWrapper = styled.div`
 function SharePage() {
   return (
     <Wrapper>
-      <MainPageHeader/>
+      <MainPageHeader />
       <BodyWrapper></BodyWrapper>
+      <MainPageFooter />
     </Wrapper>
   );
 }

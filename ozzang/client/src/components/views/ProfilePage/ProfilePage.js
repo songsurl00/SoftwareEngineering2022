@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getUserInfo, withdrawal } from "../../../_actions/user_action";
 import MainPageHeader from "../MainPage/MainPageHeader";
+import MainPageFooter from "../Footer/Footer";
 
 const Wrapper = styled.div`
   width: 100%;

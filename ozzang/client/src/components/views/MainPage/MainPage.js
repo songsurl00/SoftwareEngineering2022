@@ -13,6 +13,7 @@ import MenuItem from "@mui/material/MenuItem";
 
 import { ReactComponent as PlusSvgIcon } from "../assets/plus_icon.svg";
 import { getClothes } from "../../../_actions/user_action";
+import MainPageFooter from "../Footer/Footer";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -47,7 +48,7 @@ const FilterWrapper = styled.div`
 `;
 
 const ClothesListWrapper = styled.div`
-width: 960px;
+  width: 960px;
 `;
 
 const NewClothesButton = styled.button`
@@ -129,7 +130,7 @@ function MainPage() {
   };
   const onFavHandler = (event) => {
     setSearchFav(event.target.value);
-  }
+  };
 
   const navigate = useNavigate();
 
@@ -208,6 +209,7 @@ function MainPage() {
         <NewClothesButton onClick={PlusBtnHandler}>
           <StyledPlusSvgIcon />
         </NewClothesButton>
+        <MainPageFooter />
       </BodyWrapper>
     </Wrapper>
   );
