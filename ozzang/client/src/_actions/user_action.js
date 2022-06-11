@@ -10,6 +10,7 @@ import {
   CLOTHES_LISTING,
   UPLOAD_STYLE,
   STYLE_LISTING,
+  UPDATE_CLOTHES,
 } from "./types";
 
 // 로그인
@@ -67,10 +68,16 @@ export async function uploadStyle(dataToSubmit) {
   return { type: UPLOAD_STYLE, payload: request.data };
 }
 
-//스타일 조회
+// 스타일 조회
 export async function getStyle(dataToSubmit) {
   const request = await axios.get("/api/style/listing", {
     params: dataToSubmit,
   });
   return { type: STYLE_LISTING, payload: request.data };
+}
+
+// 옷 정보 업데이트
+export async function updateClothes(dataToSubmit) {
+  const request = await axios.post("/api/clothes/update", dataToSubmit);
+  return { type: UPDATE_CLOTHES, payload: request.data };
 }
