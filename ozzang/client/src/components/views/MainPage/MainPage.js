@@ -40,10 +40,14 @@ const FilterWrapper = styled.div`
   width: 960px;
   height: 88px;
   margin: 0px 0px 16px 0px;
-  padding: 16px 20px 4px 20px;
+  padding: 16px 20px;
   border-radius: 0px;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
   background-color: white;
+`;
+
+const ClothesListWrapper = styled.div`
+width: 960px;
 `;
 
 const NewClothesButton = styled.button`
@@ -197,7 +201,9 @@ function MainPage() {
             onChange={onSearchHandler}
           />
         </FilterWrapper>
-        <ClothesGridWrapper clothes={clothes} setClothes={setClothes} />
+        <ClothesListWrapper>
+          <ClothesGridWrapper clothes={clothes} setClothes={setClothes} />
+        </ClothesListWrapper>
 
         <NewClothesButton onClick={PlusBtnHandler}>
           <StyledPlusSvgIcon />

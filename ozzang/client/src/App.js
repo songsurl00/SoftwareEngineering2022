@@ -7,6 +7,7 @@ import RegisterPage from "./components/views/RegisterPage/RegisterPage";
 import MainPage from "./components/views/MainPage/MainPage";
 import ClothesDetailPage from "./components/views/MainPage/ClothesDetailPage";
 import UploadClothesPage from "./components/views/UploadClothesPage/UploadClothes";
+import UploadStylesPage from "./components/views/MainPage/UploadStylePage";
 import Auth from "./hoc/auth";
 import ProfilePage from "./components/views/ProfilePage/ProfilePage";
 import StylePage from "./components/views/MainPage/StylePage";
@@ -23,6 +24,7 @@ const AuthStylePage = Auth(StylePage, true);
 const AuthSharePage = Auth(SharePage, true);
 const AuthUploadClothesPage = Auth(UploadClothesPage, true);
 const AuthUpdateClothesPage = Auth(UpdateClothesPage, true);
+const AuthUploadStylesPage = Auth(UploadStylesPage, true);
 function App() {
   return (
     <Router>
@@ -41,6 +43,7 @@ function App() {
           <Route path="/main" element={<AuthMainPage />} />
           <Route path="/cloth/:cloth_id" element={<AuthClothesDetailPage />} />
           <Route path="/uploadClothes" element={<AuthUploadClothesPage />} />
+          <Route path="/uploadStyles" element={<AuthUploadStylesPage />} />
           <Route path="/profile" element={<AuthProfilePage />} />
           <Route path="/findAccount" />
           <Route path="/share" element={<AuthSharePage />} />

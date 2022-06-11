@@ -15,12 +15,12 @@ const Wrapper = styled.div`
 `;
 
 const WrapperTitle = styled.div`
-  width: 960px;
+  width: 100%;
   height: 40px;
   margin: 0px 0px 8px 0px;
   font-size: 18px;
   line-height: 40px;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.4);
 `;
 
 const GridWrapper = styled.div`
@@ -28,7 +28,7 @@ const GridWrapper = styled.div`
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 16px;
 
-  width: 960px;
+  width: 100%;
   height: 100%;
 `;
 
@@ -50,6 +50,10 @@ const Card = styled.div`
     margin-top: -4px;
     margin-bottom: 4px;
     box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.5);
+  }
+  &.cloth-selected {
+    background-color: #cae2fe;
+    box-shadow: 0px 1px 8px #248afdff;
   }
 `;
 
@@ -149,19 +153,28 @@ const CardInfoContent = styled.div`
 `;
 
 const ClothCard = (props) => {
-  const { cloth, clothIndex, updateCloth } = props;
+  const { cloth, clothIndex, updateCloth, onClothClick, selectedClothes } = props;
 
   const [isHover, setIsHover] = useState(false);
 
   const onCardMouseOver = useCallback(() => {
+    if (onClothClick) {
+      return;
+    }
     setIsHover(true);
   }, []);
   const onCardMouseOut = useCallback(() => {
+    if (onClothClick) {
+      return;
+    }
     setIsHover(false);
   }, []);
 
   const onFavoriteButtonClick = useCallback(
     (event) => {
+      if (onClothClick) {
+        return;
+      }
       updateFavorite(cloth);
       const newCloth = _.cloneDeep(cloth);
       newCloth.fav = !cloth.fav;
@@ -174,14 +187,21 @@ const ClothCard = (props) => {
   const navigate = useNavigate();
 
   const onCardClick = useCallback(() => {
+    if (onClothClick) {
+      return onClothClick(cloth);
+    }
     navigate(`/cloth/${cloth._id}`);
   }, []);
+
+
+  const isSelected = (selectedClothes || []).some((sel) => sel._id === cloth._id);
 
   return (
     <Card
       className={[
         isHover && "cloth-card-hover",
         cloth.fav && "cloth-card-fav",
+        isSelected && "cloth-selected",
       ].join(" ")}
       onClick={onCardClick}
       onMouseOver={onCardMouseOver}
@@ -208,7 +228,7 @@ const ClothCard = (props) => {
 };
 
 const ClothesGridWrapper = (props) => {
-  const { clothes, setClothes } = props;
+  const { clothes, setClothes, onClothClick, selectedClothes } = props;
 
   const updateCloth = useCallback(
     (index, cloth) => {
@@ -228,6 +248,8 @@ const ClothesGridWrapper = (props) => {
               cloth={cloth}
               clothIndex={index}
               updateCloth={updateCloth}
+              onClothClick={onClothClick}
+              selectedClothes={selectedClothes}
               key={cloth._id}
             />
           );
