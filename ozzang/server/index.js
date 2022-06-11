@@ -115,33 +115,33 @@ app.get("/api/users/logout", auth, (req, res) => {
   );
 });
 
-// 회원탈퇴 api
-app.post("/api/users/withdrawal", async (req, res) => {
-  Clothes.deleteMany(
-    {
-      useremail: req.cookies.email,
-    },
-    (err1, clothes) => {
-      if (err1) {
-        return res.json({ success: false, err1 });
-      } else {
-        console.log("해당 유저의 모든 옷 정보를 지웠습니다.");
-        User.findOneAndDelete(
-          {
-            email: req.cookies.email,
-          },
-          (err2, user) => {
-            if (err2) return res.json({ success: false, err2 });
-            console.log("해당 유저 정보를 삭제했습니다.");
-            return res.json({
-              success: true,
-            });
-          }
-        );
-      }
-    }
-  );
-});
+// // 회원탈퇴 api
+// app.post("/api/users/withdrawal", async (req, res) => {
+//   Clothes.deleteMany(
+//     {
+//       useremail: req.cookies.email,
+//     },
+//     (err1, clothes) => {
+//       if (err1) {
+//         return res.json({ success: false, err1 });
+//       } else {
+//         console.log("해당 유저의 모든 옷 정보를 지웠습니다.");
+//         User.findOneAndDelete(
+//           {
+//             email: req.cookies.email,
+//           },
+//           (err2, user) => {
+//             if (err2) return res.json({ success: false, err2 });
+//             console.log("해당 유저 정보를 삭제했습니다.");
+//             return res.json({
+//               success: true,
+//             });
+//           }
+//         );
+//       }
+//     }
+//   );
+// });
 
 // 옷 업로드 라우트
 app.post("/api/clothes/upload", async (req, res) => {
