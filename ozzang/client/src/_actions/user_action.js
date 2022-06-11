@@ -8,7 +8,7 @@ import {
   USER_INFO,
   FAV_UPDATE,
   CLOTHES_LISTING,
-  FAV_LISTING,
+  UPLOAD_STYLE,
 } from "./types";
 
 // 로그인
@@ -60,8 +60,8 @@ export async function getClothes(filter) {
   return { type: CLOTHES_LISTING, payload: request.data };
 }
 
-// 즐겨찾기된 옷 목록 가져오기
-export async function getFavClothes() {
-  const request = await axios.get("/api/clothes/listingFav");
-  return { type: FAV_LISTING, payload: request.data };
+// 스타일 업로드
+export async function uploadStyle(dataToSubmit) {
+  const request = await axios.post("/api/clothes.upload", dataToSubmit);
+  return { type: UPLOAD_STYLE, payload: request.data };
 }

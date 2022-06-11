@@ -28,6 +28,7 @@ const { User } = require("./models/User");
 const { Clothes } = require("./models/Clothes");
 
 const mongoose = require("mongoose");
+const { Style } = require("./models/Style");
 mongoose
   .connect(config.mongoURI)
   .then(() => {
@@ -154,7 +155,11 @@ app.post("/api/clothes/upload", async (req, res) => {
 
   const clothes = new Clothes(row);
   clothes.save((err, doc) => {
-    if (err) return res.json({ success: false, err });
+    if (err)
+      return res.json({
+        success: false,
+        err,
+      });
     return res.status(200).json({
       success: true,
     });
@@ -179,7 +184,6 @@ app.get("/api/clothes/listing", (req, res) => {
     fav: req.query.fav === 'true',
   };
   let search = _.pickBy(temp, _.identity);
-  console.log(temp);
   Clothes.find(
     {
       useremail: req.cookies.email,
@@ -202,9 +206,9 @@ app.get("/api/clothes/listing", (req, res) => {
   );
 });
 
+// 옷 상세정보 조회
 app.get("/api/clothes/:clothId", (req, res) => {
   // 옷 정보 가져오기 ( 조회 )
-  
   Clothes.find(
     // { name: req.body.name, uploader: req.body.email },
     { useremail: req.cookies.email, _id: req.params.clothId },
@@ -238,5 +242,49 @@ app.post("/api/clothes/updateFav", (req, res) => {
         });
       }
     );
+  });
+});
+
+app.post("/api/style/upload", async (req, res) => {
+  // base64 decoding.
+  const base64EncodedImage = req.body.img;
+  const decodedImage = new Buffer.from(
+    base64EncodedImage.replace(/^data:image\/\w+;base64,/, ""),
+    "base64"
+  );
+  const type = base64EncodedImage.split(";")[0].split("/")[1];
+  const key = Math.random().toString(36).substring(2, 11);
+
+  // s3 upload 위한 변수
+  let s3uploadData = {
+    Key: `${key}.${type}`,
+    Body: decodedImage,
+    ContentEncoding: "base64",
+    ContentType: `image/${type}`,
+  };
+
+  // s3 upload 및 완료 대기.
+  await s3Bucket.putObject(s3uploadData).promise();
+  console.log("successfully uploaded the image!");
+
+  let row = {
+    useremail: req.body.useremail,
+    name: req.body.name,
+    season: req.body.season,
+    imgUrl: `${S3_BUCKET_URL}/${key}.${type}`,
+    description: req.body.description,
+    clotheslist: req.body.clotheslist,
+  };
+
+  const clothes = new Style(row);
+  clothes.save((err, doc) => {
+    if (err)
+      return res.json({
+        success: false,
+        err,
+      });
+    return res.status(200).json({
+      success: true,
+    });
   });
 });

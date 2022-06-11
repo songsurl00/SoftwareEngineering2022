@@ -7,3 +7,4 @@ export const UPLOAD_CLOTHES = "upload_clothes";
 export const FAV_UPDATE = "favorite_updata";
 export const CLOTHES_LISTING = "clothes_listing";
 export const FAV_LISTING = "favorite_listing";
+export const UPLOAD_STYLE = "upload_style";

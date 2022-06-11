@@ -23,7 +23,7 @@ const StyleSchema = mongoose.Schema({
     maxlength: 300,
   },
   clohteslist: {
-    type: ARRAY,
+    type: Array,
   },
 });
 
