@@ -410,12 +410,12 @@ app.get("/api/style/listingshared", (req, res) => {
       if (!style) {
         return res.join({
           styleSearchSuccess: false,
-          messaage: "해당 정보에 맞는 스타일이 없습니다.",
+          messaage: "공유스타일을 불러오기에 실패했습니다.",
         });
       } else {
         return res.json({
           success: true,
-          data,
+          style,
         });
       }
     });
