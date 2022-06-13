@@ -404,6 +404,7 @@ app.get("/api/style/listing", (req, res) => {
 app.get("/api/style/listingshared", (req, res) => {
   Style.find({
     share: true,
+    ...req.query,
   })
     .populate("clotheslist")
     .exec((err, style) => {

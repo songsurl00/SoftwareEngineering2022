@@ -232,12 +232,6 @@ function SharePage() {
   const [seasonFilter, setSeasonFilter] = useState("all");
   const [styles, setStyles] = useState([]);
 
-  const navigate = useNavigate();
-
-  const moveToUploadStyle = useCallback(() => {
-    navigate("/uploadStyles");
-  });
-
   useEffect(() => {
     const getStyleFromServer = async () => {
       const filter = {};

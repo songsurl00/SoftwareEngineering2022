@@ -188,7 +188,7 @@ const StyleInforRowSeparator = styled.div`
 `;
 
 const StyleRow = (props) => {
-  const {style, getRemoveStyle} = props;
+  const { style, getRemoveStyle } = props;
 
   const onDeleteButtonClick = () => {
     const clickDelete = window.confirm("스타일을 삭제하시겠습니까?");
@@ -197,11 +197,11 @@ const StyleRow = (props) => {
     }
 
     const deleteStyleAsync = async () => {
-      const response = await deleteStyle({_id : style._id});
+      const response = await deleteStyle({ _id: style._id });
       if (!response.payload.success) {
-        return alert('스타일을 삭제하는 중 에러가 발생하였습니다.');
+        return alert("스타일을 삭제하는 중 에러가 발생하였습니다.");
       }
-      alert('성공적으로 스타일을 삭제했습니다.');
+      alert("성공적으로 스타일을 삭제했습니다.");
       getRemoveStyle(style._id);
     };
     deleteStyleAsync();
@@ -209,7 +209,9 @@ const StyleRow = (props) => {
 
   return (
     <StyleRowDiv>
-      <StyleDeleteButton onClick={onDeleteButtonClick}>삭제하기</StyleDeleteButton>
+      <StyleDeleteButton onClick={onDeleteButtonClick}>
+        삭제하기
+      </StyleDeleteButton>
       <StyleImageWrapper>
         <StyleImage src={style.imgUrl} />
       </StyleImageWrapper>
@@ -260,21 +262,24 @@ function StylePage() {
     const getStyleFromServer = async () => {
       const filter = {};
       if (seasonFilter !== "all") {
-        filter.season = seasonFilter
+        filter.season = seasonFilter;
       }
       const response = await getStyle(filter);
-      setStyles(response.payload.style)
+      setStyles(response.payload.style);
     };
     getStyleFromServer();
   }, [seasonFilter, setSeasonFilter]);
 
   const updateSeasonFilter = useCallback((event) => {
     const newSeasonFilter = event.target.value;
-    setSeasonFilter(event.target.value)
+    setSeasonFilter(event.target.value);
   });
 
   const getRemoveStyle = (styleId) => {
-    const matchedStyleIndex = _.findIndex(styles, (style) => style._id === styleId);
+    const matchedStyleIndex = _.findIndex(
+      styles,
+      (style) => style._id === styleId
+    );
     if (styleId < 0) {
       return;
     }
@@ -314,12 +319,18 @@ function StylePage() {
           </NewStyleButton>
         </FilterWrapper>
         <StyleRowWrapper>
-          <StyleRowWrapperTitle>스타일 리스트 ({styles.length}개 검색됨)</StyleRowWrapperTitle>
-          {
-            _.map(styles, (style) => {
-              return <StyleRow key={style._id} style={style} getRemoveStyle={getRemoveStyle}/>
-            })
-          }
+          <StyleRowWrapperTitle>
+            스타일 리스트 ({styles.length}개 검색됨)
+          </StyleRowWrapperTitle>
+          {_.map(styles, (style) => {
+            return (
+              <StyleRow
+                key={style._id}
+                style={style}
+                getRemoveStyle={getRemoveStyle}
+              />
+            );
+          })}
         </StyleRowWrapper>
         <MainPageFooter />
       </BodyWrapper>
