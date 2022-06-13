@@ -262,7 +262,7 @@ function UploadStylePage() {
                     <MenuItem value="봄">봄</MenuItem>
                     <MenuItem value="여름">여름</MenuItem>
                     <MenuItem value="가을">가을</MenuItem>
-                    <MenuItem value="겨을">겨을</MenuItem>
+                    <MenuItem value="겨울">겨울</MenuItem>
                   </Select>
                 </FormControl>
                 <FormControl sx={{ minWidth: 276 }}>
