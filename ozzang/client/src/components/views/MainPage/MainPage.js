@@ -102,8 +102,6 @@ function MainPage() {
         season: searchSeason,
         fav: searchFav,
       };
-
-      console.log(filter);
       const response = await getClothes(filter);
       const newClothes = response.payload.clothes;
       setClothes(newClothes);

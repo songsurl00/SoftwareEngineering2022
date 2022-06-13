@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { uploadClothes } from "../../../_actions/user_action";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -53,6 +53,15 @@ const UploadBox = styled.form`
 `;
 
 function UploadClothesPage() {
+  // useEffect(() => {
+  //   const clothesInfo = async () => {
+  //     let setClothesInfo = {
+  //       name= "",
+  //       brand= "",
+  //       price= "",
+  //     };
+  //   };
+  // });
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState({});
@@ -127,7 +136,6 @@ function UploadClothesPage() {
     });
   };
 
-  // console.log(ImageSrc);
   return (
     <Wrapper>
       <Title>옷 등록</Title>

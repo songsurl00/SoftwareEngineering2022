@@ -187,13 +187,12 @@ function UploadStylePage() {
   const onSaveButtonClick = useCallback(
     (event) => {
       const selectedClothesID = selectedClothes.map((clothes) => clothes._id);
-      console.log(selectedClothesID);
       let body = {
         img: imageSrc,
         ...style,
         clothesList: selectedClothesID,
       };
-      console.log(body);
+
       uploadStyle(body);
       navigate("/style");
     },

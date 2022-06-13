@@ -135,7 +135,6 @@ function UpdateClothesPage() {
     });
   };
 
-  // console.log(ImageSrc);
   return (
     <Wrapper>
       <Title>옷 정보 수정</Title>

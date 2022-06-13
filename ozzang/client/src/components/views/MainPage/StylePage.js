@@ -263,7 +263,6 @@ function StylePage() {
         filter.season = seasonFilter
       }
       const response = await getStyle(filter);
-      console.log(response)
       setStyles(response.payload.style)
     };
     getStyleFromServer();
@@ -271,7 +270,6 @@ function StylePage() {
 
   const updateSeasonFilter = useCallback((event) => {
     const newSeasonFilter = event.target.value;
-    console.log(newSeasonFilter)
     setSeasonFilter(event.target.value)
   });
 

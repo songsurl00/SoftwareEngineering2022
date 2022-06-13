@@ -37,7 +37,7 @@ mongoose
   .catch((err) => console.log("err"));
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Listening on port ${port}`);
 });
 
 // 회원가입 라우터 register router
@@ -323,7 +323,6 @@ app.post("/api/clothes/delete", async (req, res) => {
 // 스타일 업로드
 app.post("/api/style/upload", async (req, res) => {
   let row;
-  console.log(req.body.img);
   if (!(req.body.img === "")) {
     // base64 decoding.
     const base64EncodedImage = req.body.img;
@@ -356,7 +355,6 @@ app.post("/api/style/upload", async (req, res) => {
       share: req.body.share,
     };
   } else {
-    console.log(req.body.clothesList);
     row = {
       useremail: req.cookies.email,
       name: req.body.name,
@@ -388,7 +386,6 @@ app.get("/api/style/listing", (req, res) => {
   })
     .populate("clotheslist")
     .exec((err, style) => {
-      console.log(style);
       if (!style) {
         return res.join({
           styleSearchSuccess: false,

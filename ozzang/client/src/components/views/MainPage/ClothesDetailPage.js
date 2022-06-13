@@ -158,7 +158,6 @@ const ClothesDetailPage = () => {
     const getCloth = async () => {
       const response = await axios.get(`/api/clothes/${params.cloth_id}`);
       const newCloth = response?.data?.cloth;
-      console.log(newCloth);
       setCloth(newCloth);
     };
     getCloth();
@@ -174,7 +173,7 @@ const ClothesDetailPage = () => {
   );
   const onDeleteButtonClick = useCallback(
     (event) => {
-      const clickDelete = window.confirm('정말로 삭제하시겠습니까?');
+      const clickDelete = window.confirm("정말로 삭제하시겠습니까?");
       if (!clickDelete) {
         return;
       }
