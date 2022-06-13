@@ -12,6 +12,7 @@ import MenuItem from "@mui/material/MenuItem";
 
 import ClothesGridWrapper from "../MainPage/ClothesGridWrapper";
 import { getClothes, uploadStyle } from "../../../_actions/user_action";
+import MainPageFooter from "../Footer/Footer";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -205,7 +206,7 @@ function UploadStylePage() {
       <BodyWrapper>
         <UploaderWrapper>
           <BaseInformationWrapper>
-            <UploaderTitle>기본 정보 입력하기</UploaderTitle>
+            <UploaderTitle>스타일 정보 입력하기</UploaderTitle>
             <UploaderContent>
               <StyleImageColumn>
                 <div>
@@ -295,10 +296,11 @@ function UploadStylePage() {
               />
             </UploaderContent>
             <UploadStyleButton onClick={onSaveButtonClick}>
-              저장하기
+              등록하기
             </UploadStyleButton>
           </BaseInformationWrapper>
         </UploaderWrapper>
+        <MainPageFooter />
       </BodyWrapper>
     </Wrapper>
   );

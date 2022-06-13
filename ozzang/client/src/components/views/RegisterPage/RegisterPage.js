@@ -4,12 +4,14 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
+import MainPageHeader from "../MainPage/MainPageHeader";
+
 const Wrapper = styled.div`
   text-align: center;
 `;
 
 const Title = styled.div`
-  margin-top: 30px;
+  margin-top: 130px;
   font-size: 30px;
 `;
 
@@ -111,26 +113,27 @@ function RegisterPage() {
 
   return (
     <Wrapper>
-      <Title>회원가입</Title>
+      <MainPageHeader />
+      <Title>옷짱 회원가입</Title>
       <InputWrapper>
         <RegisterBox onSubmit={onSubmitHandler}>
-          <label>Email</label>
+          <label>이메일</label>
           <input type="email" value={Email} onChange={onEmailHandler} />
-          <label>Password</label>
+          <label>비밀번호</label>
           <input
             type="password"
             value={Password}
             onChange={onPasswordHandler}
           />
-          <label>Confirm Password</label>
+          <label>비밀번호 확인</label>
           <input
             type="password"
             value={ConfirmPassword}
             onChange={onConfirmPasswordHandler}
           />
-          <label>Name</label>
+          <label>이름</label>
           <input type="text" value={Name} onChange={onNameHandler} />
-          <label>UserTel</label>
+          <label>전화번호</label>
           <input type="tel" value={userTel} onChange={onUserTelHandler} />
 
           <br />

@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styled from "@emotion/styled";
 import { updateClothes } from "../../../_actions/user_action";
 import axios from "axios";
+import MainPageHeader from "../MainPage/MainPageHeader";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -137,6 +138,7 @@ function UpdateClothesPage() {
 
   return (
     <Wrapper>
+      <MainPageHeader />
       <Title>옷 정보 수정</Title>
       <InputWrapper>
         <UploadBox onSubmit={onSubmitHandler}>

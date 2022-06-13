@@ -18,7 +18,7 @@ const BodyWrapper = styled.div`
   position: relative;
   display: flex;
   width: 100%;
-  height : 100%;
+  height: 100%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -89,6 +89,7 @@ const LogoutButton = styled.button`
 `;
 
 const WithdrawButton = styled.button`
+  margin-bootom: 10px;
   width: 160px;
   height: 48px;
   padding: 0px;
@@ -162,8 +163,9 @@ function ProfilePage() {
         <WithdrawButton onClick={onWithdrawalButtonClick}>
           탈퇴하기
         </WithdrawButton>
-        <MainPageFooter/>
       </BodyWrapper>
+
+      <MainPageFooter />
     </Wrapper>
   );
 }
