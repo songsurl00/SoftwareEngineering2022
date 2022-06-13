@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
 import MainPageHeader from "../MainPage/MainPageHeader";
+import MainPageFooter from "../Footer/Footer";
 
 const Wrapper = styled.div`
   text-align: center;
@@ -140,6 +141,7 @@ function RegisterPage() {
           <button type="submit">회원가입하기</button>
         </RegisterBox>
       </InputWrapper>
+      <MainPageFooter />
     </Wrapper>
   );
 }
