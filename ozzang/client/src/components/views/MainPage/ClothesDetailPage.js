@@ -6,6 +6,7 @@ import axios from "axios";
 
 import { ReactComponent as HeartSvgIcon } from "../assets/heart_icon.svg";
 import { deleteClothes } from "../../../_actions/user_action";
+import MainPageFooter from "../Footer/Footer";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -242,6 +243,7 @@ const ClothesDetailPage = () => {
             </ClothButtonWrapper>
           </ClothContentWrapper>
         </ContentWrapper>
+        <MainPageFooter />
       </BodyWrapper>
     </Wrapper>
   );
