@@ -108,57 +108,7 @@ const UploadClothesButton = styled.button`
   }
 `;
 
-// -------------------------------------------------
-
-const InputWrapper = styled.div`
-  margin: auto;
-  margin: 10px;
-`;
-const UploadBox = styled.form`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  margin: auto;
-  max-width: 500px;
-
-  margin-top: 20px;
-  padding: 32px;
-
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
-  label {
-    margin-top: 15px;
-    text-align: left;
-    width: 100%;
-  }
-  input {
-    width: 100%;
-    border: 1px solid grey;
-    border-radius: 5px;
-  }
-
-  select {
-    width: 100%;
-    border: 1px solid grey;
-    border-radius: 5px;
-  }
-
-  button {
-    margin-top: 20px;
-  }
-`;
-
 function UploadClothesPage() {
-  // useEffect(() => {
-  //   const clothesInfo = async () => {
-  //     let setClothesInfo = {
-  //       name= "",
-  //       brand= "",
-  //       price= "",
-  //     };
-  //   };
-  // });
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState({});
