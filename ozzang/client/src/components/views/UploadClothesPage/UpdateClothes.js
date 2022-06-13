@@ -293,7 +293,8 @@ function UpdateClothesPage() {
                 <TextField
                   type="date"
                   sx={{ minWidth: 320, marginRight: 2, marginBottom: "24px" }}
-                  label=" "
+                  label="구매일자"
+                  InputLabelProps={{ shrink: true }}
                   value={PurchaseDate}
                   onChange={onPurchaseDateHandler}
                   variant="outlined"

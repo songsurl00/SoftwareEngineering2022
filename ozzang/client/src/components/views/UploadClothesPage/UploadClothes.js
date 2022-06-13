@@ -249,9 +249,10 @@ function UploadClothesPage() {
                 <TextField
                   type="date"
                   sx={{ minWidth: 320, marginRight: 2, marginBottom: "24px" }}
-                  label=" "
+                  label="구매일자"
                   value={PurchaseDate}
                   onChange={onPurchaseDateHandler}
+                  InputLabelProps={{ shrink: true }}
                   variant="outlined"
                   fullWidth
                 ></TextField>
