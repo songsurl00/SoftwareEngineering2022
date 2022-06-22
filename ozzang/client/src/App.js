@@ -13,6 +13,7 @@ import ProfilePage from "./components/views/ProfilePage/ProfilePage";
 import StylePage from "./components/views/MainPage/StylePage";
 import SharePage from "./components/views/MainPage/SharePage";
 import UpdateClothesPage from "./components/views/UploadClothesPage/UpdateClothes";
+import IDPWFindPage from "./components/views/LoginPage/FindIDPWPage";
 
 const AuthProfilePage = Auth(ProfilePage, true);
 const AuthLandingPage = Auth(LandingPage, null); // 랜딩페이지->메인페이지로 변경해서 사용안함.
@@ -25,6 +26,7 @@ const AuthSharePage = Auth(SharePage, true);
 const AuthUploadClothesPage = Auth(UploadClothesPage, true);
 const AuthUpdateClothesPage = Auth(UpdateClothesPage, true);
 const AuthUploadStylesPage = Auth(UploadStylesPage, true);
+const AuthIDPWFindPage = Auth(IDPWFindPage, false);
 function App() {
   return (
     <Router>
@@ -45,7 +47,7 @@ function App() {
           <Route path="/uploadClothes" element={<AuthUploadClothesPage />} />
           <Route path="/uploadStyles" element={<AuthUploadStylesPage />} />
           <Route path="/profile" element={<AuthProfilePage />} />
-          <Route path="/findAccount" />
+          <Route path="/findAccount" element={<AuthIDPWFindPage />} />
           <Route path="/share" element={<AuthSharePage />} />
           <Route path="/style" element={<AuthStylePage />} />
           <Route

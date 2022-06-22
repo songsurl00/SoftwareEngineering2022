@@ -154,9 +154,7 @@ function ProfilePage() {
           </ProfileRow>
           <ProfileRow>
             <ProfileRowTitle>전화번호</ProfileRowTitle>
-            <ProfileRowContent>
-              {userInfo.userTel || "전화번호 없음"}
-            </ProfileRowContent>
+            <ProfileRowContent>{userInfo.userTel}</ProfileRowContent>
           </ProfileRow>
         </ProfileWrapper>
         <LogoutButton onClick={LogoutBtnHandler}>로그아웃하기</LogoutButton>
