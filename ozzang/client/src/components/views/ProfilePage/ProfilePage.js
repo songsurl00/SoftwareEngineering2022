@@ -155,7 +155,7 @@ function ProfilePage() {
           <ProfileRow>
             <ProfileRowTitle>전화번호</ProfileRowTitle>
             <ProfileRowContent>
-              {userInfo.email || "전화번호 없음"}
+              {userInfo.userTel || "전화번호 없음"}
             </ProfileRowContent>
           </ProfileRow>
         </ProfileWrapper>
