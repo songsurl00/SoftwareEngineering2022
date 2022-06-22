@@ -18,9 +18,9 @@ app.use(cookieParser());
 // for s3 access
 const AWS = require("aws-sdk");
 AWS.config.loadFromPath("./s3_config.json");
-const s3Bucket = new AWS.S3({ params: { Bucket: "ozzang-upload-bucket" } });
+const s3Bucket = new AWS.S3({ params: { Bucket: "project-ozzang-images" } });
 const S3_BUCKET_URL =
-  "https://ozzang-upload-bucket.s3.ap-northeast-2.amazonaws.com";
+  "https://project-ozzang-images.s3.ap-northeast-2.amazonaws.com";
 const config = require("./config/key");
 
 const { auth } = require("./middleware/auth");
