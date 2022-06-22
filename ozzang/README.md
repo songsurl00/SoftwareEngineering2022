@@ -11,4 +11,4 @@
 
 - `server` 디렉토리 안에서 터미널 실행 후 `npm install`
 - server 디렉토리 안에서 `npm start`  
-  (서버의 경우 `dev.js` 필요.)
+  (서버의 경우 `dev.js`, `s3_config` 필요.)
