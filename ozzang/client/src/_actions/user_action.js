@@ -1,4 +1,3 @@
-import _ from "lodash";
 import axios from "axios";
 import {
   LOGIN_USER,
@@ -15,6 +14,7 @@ import {
   WITHDRAWAL_USER,
   SHARED_LISTING,
   DELETE_STYLE,
+  EMAIL_FIND,
 } from "./types";
 
 // 로그인
@@ -51,6 +51,13 @@ export async function withdrawal() {
 export async function getUserInfo() {
   const request = await axios.get("/api/users/getUserInfo");
   return { type: USER_INFO, payload: request.data };
+}
+// email 찾기
+export function getEmail(dataToSubmit) {
+  const request = axios
+    .post("/api/users/findEmail", dataToSubmit)
+    .then((response) => response.data);
+  return { type: EMAIL_FIND, payload: request };
 }
 
 //---------------------------------------------------------------------

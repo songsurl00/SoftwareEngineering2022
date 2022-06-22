@@ -152,7 +152,7 @@ function RegisterPage() {
           <RegisterRow>
             <TextField
               sx={{ minWidth: 400, marginBottom: "30px" }}
-              label="Email"
+              label="E-MAIL"
               value={Email}
               onChange={onEmailHandler}
               variant="outlined"
@@ -161,7 +161,7 @@ function RegisterPage() {
             ></TextField>
             <TextField
               sx={{ minWidth: 400, marginBottom: "30px" }}
-              label="Password"
+              label="비밀번호"
               value={Password}
               onChange={onPasswordHandler}
               variant="outlined"
@@ -170,7 +170,7 @@ function RegisterPage() {
             ></TextField>
             <TextField
               sx={{ minWidth: 400, marginBottom: "30px" }}
-              label="Confirm Password"
+              label="비밀번호 확인"
               value={ConfirmPassword}
               onChange={onConfirmPasswordHandler}
               variant="outlined"
@@ -179,7 +179,7 @@ function RegisterPage() {
             ></TextField>
             <TextField
               sx={{ minWidth: 400, marginBottom: "30px" }}
-              label="Name"
+              label="이름"
               value={Name}
               onChange={onNameHandler}
               variant="outlined"
@@ -188,7 +188,7 @@ function RegisterPage() {
             ></TextField>
             <TextField
               sx={{ minWidth: 400, marginBottom: "30px" }}
-              label="Tel"
+              label="전화번호(-제외)"
               value={usertel}
               onChange={onUserTelHandler}
               variant="outlined"

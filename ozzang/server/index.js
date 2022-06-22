@@ -143,6 +143,20 @@ app.get("/api/users/logout", auth, (req, res) => {
 //   );
 // });
 
+app.post("/api/users/findEmail", (req, res) => {
+  console.log(req.body);
+  User.findOne(
+    {
+      name: req.body.name,
+      userTel: req.body.userTel,
+    },
+    (err, user) => {
+      if (err) return res.json({ success: false, err });
+      return res.json({ success: true, user });
+    }
+  );
+});
+
 // 옷 관련 --------------------------------------------------------------------------
 
 // 옷 업로드 라우트
