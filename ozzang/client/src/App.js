@@ -1,7 +1,6 @@
 // App.js -> Routing 관련 일 처리
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LandingPage from "./components/views/LandingPage/LandingPage";
 import LoginPage from "./components/views/LoginPage/LoginPage";
 import RegisterPage from "./components/views/RegisterPage/RegisterPage";
 import MainPage from "./components/views/MainPage/MainPage";
@@ -16,7 +15,6 @@ import UpdateClothesPage from "./components/views/UploadClothesPage/UpdateClothe
 import IDPWFindPage from "./components/views/LoginPage/FindIDPWPage";
 
 const AuthProfilePage = Auth(ProfilePage, true);
-const AuthLandingPage = Auth(LandingPage, null); // 랜딩페이지->메인페이지로 변경해서 사용안함.
 const AuthLoginPage = Auth(LoginPage, false);
 const AuthRegisterPage = Auth(RegisterPage, false);
 const AuthMainPage = Auth(MainPage, true);

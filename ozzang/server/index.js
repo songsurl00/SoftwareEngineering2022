@@ -115,7 +115,7 @@ app.get("/api/users/logout", auth, (req, res) => {
   );
 });
 
-// // 회원탈퇴 api
+// // 회원탈퇴 api - 기능 막아놓음.
 // app.post("/api/users/withdrawal", async (req, res) => {
 //   Clothes.deleteMany(
 //     {

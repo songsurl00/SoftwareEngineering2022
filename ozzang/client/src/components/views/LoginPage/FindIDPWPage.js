@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { registerUser } from "../../../_actions/user_action";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 
 import MainPageHeader from "../MainPage/MainPageHeader";
@@ -53,23 +51,6 @@ const ProfileRow = styled.div`
   padding: 8px 0px;
 `;
 
-const ProfileRowTitle = styled.div`
-  width: 100%;
-  height: 16px;
-
-  font-size: 14px;
-  line-height: 16px;
-  color: #888888;
-`;
-
-const ProfileRowContent = styled.div`
-  width: 100%;
-  height: 32px;
-
-  font-size: 18px;
-  line-height: 32px;
-`;
-
 const FindButton = styled.button`
   display: block;
   width: 160px;
@@ -95,7 +76,6 @@ const FindButton = styled.button`
 `;
 
 function IDPWFindPage() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   // state 생성

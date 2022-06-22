@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { uploadClothes } from "../../../_actions/user_action";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import MainPageHeader from "../MainPage/MainPageHeader";
@@ -110,8 +109,6 @@ const UploadClothesButton = styled.button`
 
 function UploadClothesPage() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [userInfo, setUserInfo] = useState({});
 
   // 이미지 업로드을 위한 Base64 변환.
   const [ImageSrc, setImageSrc] = useState("");
@@ -146,10 +143,10 @@ function UploadClothesPage() {
   };
   const onCategoryHandler = useCallback((event) => {
     setCategory(event.target.value);
-  });
+  }, []);
   const onSeasonHandler = useCallback((event) => {
     setSeason(event.target.value);
-  });
+  }, []);
   const onPurchasePlaceHandler = (event) => {
     setPurchasePlace(event.currentTarget.value);
   };
