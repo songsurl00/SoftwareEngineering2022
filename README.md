@@ -4,7 +4,7 @@
 
 **의류 관리 프로그램**
 
-<img src = "../assets/logo.png" alt="logo" width="100">
+![옷짱 로고](./assets/logo.png)
 
 ## 프로젝트 개요
 
@@ -14,7 +14,7 @@
 이 프로젝트는 사용자가 자신의 의류를 카테고리별로 분류할 수 있도록,  
 사진을 포함해 관리할 수 있도록 도와줍니다.
 
-<img src = "../assets/systeminfo.png" alt="시스템 개요" width="150">
+![시스템 개요](./assets/systeminfo.png)
 
 ### 프로젝트 팀원
 
@@ -27,6 +27,14 @@
 > | 201810995 | 정용훈 (컴퓨터과학과) |      |
 
 ---
+
+### 사용한 기술
+
+- React.js
+- node.js
+- express.js
+- MongoDB
+- AWS S3
 
 #### 링크
 
