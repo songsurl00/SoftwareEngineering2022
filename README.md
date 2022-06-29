@@ -4,7 +4,8 @@
 
 **의류 관리 프로그램**
 
-![옷짱 로고](./assets/logo.png)
+<!-- ![옷짱 로고](./assets/logo.png){width=40%} -->
+<img src="assets/logo.png" width="200px" >
 
 ## 프로젝트 개요
 
